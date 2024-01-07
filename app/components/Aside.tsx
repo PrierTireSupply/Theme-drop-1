@@ -27,11 +27,9 @@ export function Aside({
         }}
       />
       <aside>
-        <header>
-          <h3>{heading}</h3>
-          <CloseAside />
-        </header>
-        <main>{children}</main>
+        <h3>{heading}</h3>
+        <CloseAside />
+        {children}
       </aside>
     </div>
   );
