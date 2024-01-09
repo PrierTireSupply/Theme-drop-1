@@ -25,14 +25,9 @@ export function Header({ header, isLoggedIn, cart }: HeaderProps) {
         menu={menu}
         viewport="desktop"
         primaryDomainUrl={header.shop.primaryDomain.url}
-      >
+      />
 
-        <HeaderCtas
-          isLoggedIn={isLoggedIn}
-          cart={cart}
-        />
-
-      </HeaderMenu>
+      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
 
     </header>
   );
@@ -111,18 +106,22 @@ function HeaderCtas({
 
 function HeaderMenuMobileToggle() {
   return (
-    <a className="header-menu-mobile-toggle" href="#mobile-menu-aside">
-      <h3>☰</h3>
+    <a href="#mobile-menu-aside" className="header-menu-item" role="button">
+      Menu
     </a>
   );
 }
 
 function SearchToggle() {
-  return <a className="header-menu-item" href="#search-aside">Search</a>;
+  return <a href="#search-aside" className="header-menu-item" role="button">Search</a>;
 }
 
 function CartBadge({count}: {count: number}) {
-  return <a className="header-menu-item" href="#cart-aside">Cart {count}</a>;
+  return (
+    <a href="#cart-aside" className="header-menu-item" role="button">
+      Cart <span className="">{count}</span>
+    </a>
+  );
 }
 
 function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {

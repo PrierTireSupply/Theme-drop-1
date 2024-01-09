@@ -36,10 +36,10 @@ export function Layout({
   return (
     <>
       <Header header={header} cart={cart} isLoggedIn={isLoggedIn} />
-      {/*<MobileMenuAside menu={header.menu} shop={header.shop} />*/}
-      {/*<CartAside cart={cart} />*/}
-      {/*<SearchAside />*/}
-      {/*<main>{children}</main>*/}
+      <MobileMenuAside menu={header.menu} shop={header.shop} />
+      <CartAside cart={cart} />
+      <SearchAside />
+      <main>{children}</main>
       <Suspense>
         <Await resolve={footer}>
           {(footer) => <Footer menu={footer.menu} shop={header.shop} />}
@@ -51,7 +51,7 @@ export function Layout({
 
 function CartAside({cart}: {cart: LayoutProps['cart']}) {
   return (
-    <Aside id="cart-aside" heading="CART">
+    <Aside id="cart-aside" heading="Cart">
       <Suspense fallback={<p>Loading cart ...</p>}>
         <Await resolve={cart}>
           {(cart) => {
@@ -65,7 +65,7 @@ function CartAside({cart}: {cart: LayoutProps['cart']}) {
 
 function SearchAside() {
   return (
-    <Aside id="search-aside" heading="SEARCH">
+    <Aside id="search-aside" heading="Search">
       <div className="predictive-search">
         <br />
         <PredictiveSearchForm>
@@ -98,7 +98,7 @@ function MobileMenuAside({
   shop: HeaderQuery['shop'];
 }) {
   return (
-    <Aside id="mobile-menu-aside" heading="MENU">
+    <Aside id="mobile-menu-aside" heading="Menu">
       <HeaderMenu
         menu={menu}
         viewport="mobile"

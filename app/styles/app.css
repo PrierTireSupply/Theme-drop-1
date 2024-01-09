@@ -20,9 +20,14 @@
   --brand-font-weight: 400;
   --brand-line-height: 1.5;
 
+  /* shadows */
+  --shadow-1: 0 var(--size-1) var(--size-4) rgba(0,0,0,.32);
+
   /* sizes */
+  --size-1: 0.0625rem;
   --size-4: .25rem;
   --size-8: .5rem;
+  --size-12: .8rem;
   --size-16: 1rem;
   --size-24: 1.5rem;
   --size-32: 2rem;
@@ -30,9 +35,123 @@
   --size-48: 3rem;
   --size-56: 3.5rem;
   --size-64: 4rem;
+  --size-72: 4.5rem;
+  --size-80: 5rem;
 
   /* transitions */
-  --transition-fast: .16s ease-in-out 0s;
-  --transition-norm: .24s ease-in-out 0s;
-  --transition-slow: .32s ease-in-out 0s;
+  --transition-fast: all .16s ease-in-out 0s;
+  --transition-norm: all .24s ease-in-out 0s;
+  --transition-slow: all .32s ease-in-out 0s;
+
+}
+
+/* buttons */
+:root {
+  --btn-bg-color: var(--brand-color-primary);
+  --btn-border-color: var(--brand-color-primary);
+  --btn-border-radius: var(--size-4);
+  --btn-border-size: 0;
+  --btn-font-color: var(--brand-white);
+  --btn-font-size: inherit; /* 16px or 1rem */
+  --btn-padding: var(--size-24);
+  --btn-height: var(--size-40);
+  --btn-width: initial;
+}
+
+[button-type] {
+  background: var(--btn-bg-color);
+  border: var(--btn-border-size) solid var(--btn-border-color);
+  border-radius: var(--btn-border-radius);
+  color: var(--btn-font-color);
+  font-size: var(--btn-font-size);
+  padding-right: var(--btn-padding);
+  padding-left: var(--btn-padding);
+  text-align: center;
+  line-height: var(--btn-height);
+  width: var(--btn-width);
+  transition: var(--transition-fast);
+}
+
+[button-type="icon"] {
+  --btn-border-radius: 50%;
+  --btn-font-size: var(--size-32);
+  --btn-padding: 0;
+  --btn-width: var(--size-40);
+}
+
+.btn-tertiary {
+  --btn-bg-color: var(--brand-grey-l);
+  --btn-border-color: var(--brand-grey-d);
+  --btn-font-color: var(--brand-color-secondary);
+}
+
+.btn-tertiary:focus,
+.btn-tertiary:hover {
+  --btn-bg-color: var(--brand-color-secondary);
+  --btn-font-color: var(--brand-white);
+}
+
+/* dialog */
+:root {
+  --dialog-bg-color: var(--brand-white);
+  --dialog-bg-blur: var(--size-4);
+  --dialog-bg-transition: var(--transition-norm);
+  --dialog-padding: var(--size-32);
+  --dialog-shadow: var(--shadow-1);
+  --dialog-transition: var(--transition-slow);
+  --dialog-width: 20rem;
+}
+
+.dialog {
+  background: rgba(0,0,0,.64);
+  backdrop-filter: blur(var(--dialog-bg-blur));
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  transition: var(--dialog-bg-transition);
+}
+
+.dialog-close-area {
+  background: transparent;
+  border: none;
+  color: transparent;
+  height: 100%;
+  width: calc(100% - var(--dialog-width));
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.dialog-close {
+  box-shadow: var(--dialog-shadow);
+  position: absolute;
+  top: var(--size-32);
+  left: calc(-1 * var(--size-80));
+  z-index: 9
+}
+
+.dialog-content {
+  background: var(--dialog-bg-color);
+  box-shadow: var(--dialog-shadow);
+  padding: var(--dialog-padding);
+  height: 100vh;
+  width: var(--dialog-width);
+  max-width: 96%;
+  position: fixed;
+  top: 0;
+  right: calc(-1 * var(--dialog-width));
+  transition: var(--dialog-transition);
+}
+
+.dialog:target {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.dialog:target .dialog-content {
+  transform: translateX(calc(var(--dialog-width) * -1));
 }

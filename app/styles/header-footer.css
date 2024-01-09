@@ -24,6 +24,7 @@
 .header-menu-desktop {
   align-items: center;
   display: flex;
+  flex: 1 1 auto;
   gap: var(--size-16);
 }
 
