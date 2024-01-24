@@ -98,12 +98,13 @@ function MobileMenuAside({
   shop: HeaderQuery['shop'];
 }) {
   return (
-    <Aside id="mobile-menu-aside" heading="Menu">
+    <Aside id="mobile-menu-aside" classes="dialog" dialog="tread" heading="Categories">
+
       <HeaderMenu
         menu={menu}
-        viewport="mobile"
         primaryDomainUrl={shop.primaryDomain.url}
       />
+
     </Aside>
   );
 }

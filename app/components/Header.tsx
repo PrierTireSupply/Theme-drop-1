@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import type { HeaderQuery } from 'storefrontapi.generated';
 import type { LayoutProps } from './Layout';
 import { useRootLoaderData } from '~/root';
+import { Logo } from '~/components/Logo';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
 type Viewport = 'desktop' | 'mobile';
@@ -12,54 +13,58 @@ export function Header({ header, isLoggedIn, cart }: HeaderProps) {
   return (
     <header className="header">
 
-      <NavLink
-        className="header-logo"
-        prefetch="intent"
-        to="/"
-        end
-      >
-        {shop.name}
-      </NavLink>
+      <nav className="header-menu" role="navigation">
 
-      <HeaderMenu
+        <NavLink
+          className="header-logo"
+          prefetch="intent"
+          to="/"
+          end
+        >
+          <Logo size="small" mode="light" animate="false" />
+        </NavLink>
+
+        <HeaderMenuToggle />
+
+        <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+
+      </nav>
+
+      {/*<HeaderMenu
         menu={menu}
         viewport="desktop"
         primaryDomainUrl={header.shop.primaryDomain.url}
-      />
-
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+      />*/}
 
     </header>
   );
 }
 
-export function HeaderMenu({
-  children,
-  menu,
-  primaryDomainUrl,
-  viewport,
-}: {
+export function HeaderMenu({ children, menu, primaryDomainUrl }: {
   menu: HeaderProps['header']['menu'];
   primaryDomainUrl: HeaderQuery['shop']['primaryDomain']['url'];
-  viewport: Viewport;
 }) {
   const {publicStoreDomain} = useRootLoaderData();
-  const className = `header-menu-${viewport}`;
+  const className = `primary-menu`;
 
   function closeAside(event: React.MouseEvent<HTMLAnchorElement>) {
-    if (viewport === 'mobile') {
-      event.preventDefault();
-      window.location.href = event.currentTarget.href;
-    }
+    event.preventDefault();
+    window.location.href = event.currentTarget.href;
   }
 
   return (
     <nav className={className} role="navigation">
-      {viewport === 'mobile' && (
-        <NavLink end onClick={closeAside} prefetch="intent" to="/">
-          Home
-        </NavLink>
-      )}
+
+      <NavLink
+        className="primary-menu-item"
+        end
+        onClick={closeAside}
+        prefetch="intent"
+        to="/"
+      >
+        Home
+      </NavLink>
+
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
 
@@ -72,7 +77,7 @@ export function HeaderMenu({
             : item.url;
         return (
           <NavLink
-            className="header-menu-item"
+            className="primary-menu-item"
             end
             key={item.id}
             onClick={closeAside}
@@ -88,13 +93,9 @@ export function HeaderMenu({
   );
 }
 
-function HeaderCtas({
-  isLoggedIn,
-  cart,
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
+function HeaderCtas({ isLoggedIn, cart }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
     <>
-      {/*<HeaderMenuMobileToggle />*/}
       <NavLink className="header-menu-item" prefetch="intent" to="/account">
         {isLoggedIn ? 'Account' : 'Sign in'}
       </NavLink>
@@ -104,7 +105,7 @@ function HeaderCtas({
   );
 }
 
-function HeaderMenuMobileToggle() {
+function HeaderMenuToggle() {
   return (
     <a href="#mobile-menu-aside" className="header-menu-item" role="button">
       Menu
@@ -118,8 +119,8 @@ function SearchToggle() {
 
 function CartBadge({count}: {count: number}) {
   return (
-    <a href="#cart-aside" className="header-menu-item" role="button">
-      Cart <span className="">{count}</span>
+    <a href="#cart-aside" className="header-menu-item cart" role="button">
+      Cart <span className="cart-count">{count}</span>
     </a>
   );
 }

@@ -6,25 +6,13 @@
 }
 
 .header {
-  align-items: center;
   background: var(--header-bg-color);
-  display: flex;
-  gap: var(--size-16);
-  padding: var(--size-32);
+  padding: var(--size-16) var(--size-32);
 }
 
-.header-logo {
-  color: var(--header-link-color);
-  /* font-size: var(--size-48); */
-  font-style: italic;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.header-menu-desktop {
+.header-menu {
   align-items: center;
   display: flex;
-  flex: 1 1 auto;
   gap: var(--size-16);
 }
 
@@ -32,11 +20,70 @@
   color: var(--header-link-color);
 }
 
-.header-logo:focus,
-.header-logo:hover,
 .header-menu-item:focus,
 .header-menu-item:hover {
   --header-link-color: var(--header-link-color-hover);
+}
+
+/* cart count */
+:root {
+  --cart-count-bg: var(--brand-color-action);
+  --cart-count-font-color: var(--brand-white);
+}
+
+.cart {
+  position: relative;
+}
+
+.cart-count {
+  align-items: center;
+  background: var(--cart-count-bg);
+  border-radius: 50%;
+  box-shadow: var(--box-shadow-1);
+  color: var(--cart-count-font-color);
+  display: flex;
+  font-size: var(--size-12);
+  justify-content: center;
+  height: var(--size-12);
+  width: var(--size-12);
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(var(--size-16), 0);
+}
+
+/* menu : primary */
+:root {
+  --primary-menu-bg-color: var(--brand-grey-l);
+  --primary-menu-bg-color-hover: var(--brand-white);
+  --primary-menu-border-radius: var(--size-4);
+  --primary-menu-box-shadow: none;
+  --primary-menu-font-color: var(--brand-color-secondary);
+  --primary-menu-font-color-hover: var(--brand-color-action);
+}
+
+.primary-menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-8);
+  margin-top: var(--size-16);
+}
+
+.primary-menu-item {
+  background: var(--primary-menu-bg-color);
+  border-radius: var(--primary-menu-border-radius);
+  box-shadow: var(--primary-menu-box-shadow);
+  color: var(--primary-menu-font-color);
+  font-size: var(--size-12);
+  font-weight: bold;
+  padding: var(--size-8) var(--size-16);
+}
+
+.primary-menu-item:focus,
+.primary-menu-item:hover {
+  --primary-menu-bg-color: var(--primary-menu-bg-color-hover);
+  --primary-menu-box-shadow: var(--box-shadow-1);
+  --primary-menu-font-color: var(--primary-menu-font-color-hover);
 }
 
 /* footer */

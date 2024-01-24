@@ -9,16 +9,24 @@
  * ```
  */
 export function Aside({
-  children,
-  heading,
   id = 'aside',
+  classes = 'dialog',
+  dialog = 'default',
+  heading,
+  children
 }: {
-  children?: React.ReactNode;
-  heading: React.ReactNode;
   id?: string;
+  classes?: string;
+  dialog?: string;
+  heading: React.ReactNode;
+  children?: React.ReactNode;
 }) {
   return (
-    <div id={id} className="dialog" aria-modal aria-label={heading} role="dialog">
+    <div id={ id } className={ classes } dialog-type={ dialog }
+      aria-modal
+      aria-label={ heading }
+      role="dialog"
+    >
       <button
         className="dialog-close-area"
         aria-label="close dialog"

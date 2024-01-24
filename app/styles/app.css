@@ -21,7 +21,11 @@
   --brand-line-height: 1.5;
 
   /* shadows */
-  --shadow-1: 0 var(--size-1) var(--size-4) rgba(0,0,0,.32);
+  --box-shadow-1: 0 var(--size-1) var(--size-4) rgba(0,0,0,.32);
+  --box-shadow-1-invert: 0 var(--size-1) var(--size-4) rgba(255,255,255,.32);
+  --txt-shadow-1: 0 var(--size-1) var(--size-4) rgba(0,0,0,.48);
+  --txt-shadow-1-invert: 0 var(--size-1) var(--size-4) rgba(255,255,255,.48);
+  --txt-shadow-2: 0 var(--size-1) var(--size-1) rgba(0,0,0,.72);
 
   /* sizes */
   --size-1: 0.0625rem;
@@ -29,6 +33,7 @@
   --size-8: .5rem;
   --size-12: .8rem;
   --size-16: 1rem;
+  --size-20: 1.25rem;
   --size-24: 1.5rem;
   --size-32: 2rem;
   --size-40: 2.5rem;
@@ -93,13 +98,21 @@
 
 /* dialog */
 :root {
-  --dialog-bg-color: var(--brand-white);
+  --dialog-bg-color: var(--brand-grey-l);
   --dialog-bg-blur: var(--size-4);
   --dialog-bg-transition: var(--transition-norm);
   --dialog-padding: var(--size-32);
-  --dialog-shadow: var(--shadow-1);
+  --dialog-shadow: var(--box-shadow-1);
   --dialog-transition: var(--transition-slow);
   --dialog-width: 20rem;
+
+  --dialog-close-area-right: auto;
+  --dialog-close-area-left: 0;
+  --dialog-close-right: auto;
+  --dialog-close-left: calc(-1 * var(--size-80));
+  --dialog-content-right: calc(-1 * var(--dialog-width));;
+  --dialog-content-left: auto;
+  --dialog-target-content-transform: translateX(calc(var(--dialog-width) * -1));
 }
 
 .dialog {
@@ -122,14 +135,16 @@
   width: calc(100% - var(--dialog-width));
   position: absolute;
   top: 0;
-  left: 0;
+  right: var(--dialog-close-area-right);
+  left: var(--dialog-close-area-left);
 }
 
 .dialog-close {
   box-shadow: var(--dialog-shadow);
   position: absolute;
   top: var(--size-32);
-  left: calc(-1 * var(--size-80));
+  right: var(--dialog-close-right);
+  left: var(--dialog-close-left);
   z-index: 9
 }
 
@@ -142,7 +157,8 @@
   max-width: 96%;
   position: fixed;
   top: 0;
-  right: calc(-1 * var(--dialog-width));
+  right: var(--dialog-content-right);
+  left: var(--dialog-content-left);
   transition: var(--dialog-transition);
 }
 
@@ -153,5 +169,112 @@
 }
 
 .dialog:target .dialog-content {
-  transform: translateX(calc(var(--dialog-width) * -1));
+  transform: var(--dialog-target-content-transform);
+}
+
+[dialog-type="tread"] .dialog-content {
+  background-image: url("../assets/tire-tread.png");
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+}
+
+/* logo */
+:root {
+  --logo-color: var(--brand-white);
+  --logo-font-size-1: var(--size-48);
+  --logo-font-size-2: var(--size-20);
+  --logo-txt-shadow: var(--txt-shadow-1);
+  --logo-tire-wheel: var(--brand-white);
+  --logo-tire-shadow: var(--box-shadow-1);
+  --logo-tire-size: var(--size-72);
+  --logo-tire-spacing: var(--size-64);
+  --logo-tire-width: var(--size-12);
+}
+
+.logo {
+  color: var(--logo-color);
+  font-style: italic;
+  font-weight: bold;
+  padding: var(--size-4) var(--logo-tire-spacing) var(--size-4) 0;
+  text-shadow: var(--logo-txt-shadow);
+  line-height: .88;
+  position: relative;
+}
+
+.logo:hover .logo-wheel {
+  animation: spin 3s linear infinite;
+}
+
+.logo-line-1,
+.logo-line-2 {
+  position: relative;
+  z-index: 1;
+}
+
+.logo-line-1 {
+  font-size: var(--logo-font-size-1);
+}
+
+.logo-line-2 {
+  font-size: var(--logo-font-size-2);
+  letter-spacing: 1px;
+}
+
+.logo-tire {
+  border: solid var(--logo-tire-width) var(--logo-color);
+  border-radius: 50%;
+  box-shadow: var(--logo-tire-shadow);
+  height: var(--logo-tire-size);
+  width: var(--logo-tire-size);
+  opacity: .48;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 0;
+}
+
+.logo-wheel {
+  background-image: url("../assets/wheel.png");
+  background-position: 47% 50%;
+  background-repeat: no-repeat;
+  background-size: 80% 80%;
+  opacity: .96;
+  position: absolute;
+  inset: 0;
+}
+
+[logo-size="small"] {
+  --logo-font-size-1: var(--size-32);
+  --logo-font-size-2: var(--size-12);
+  --logo-tire-size: var(--size-48);
+  --logo-tire-spacing: var(--size-40);
+  --logo-tire-width: var(--size-8);
+}
+
+[logo-mode="dark"] {
+  --logo-color: var(--brand-black);
+  --logo-txt-shadow: var(--txt-shadow-1-invert);
+  --logo-tire-shadow: var(--box-shadow-1-invert);
+}
+
+[logo-mode="dark"] .logo-wheel {
+  filter: invert(80%);
+}
+
+[logo-animate="true"] .logo-wheel {
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(36deg); }
+  20% { transform: rotate(72deg); }
+  30% { transform: rotate(108deg); }
+  40% { transform: rotate(144deg); }
+  50% { transform: rotate(180deg); }
+  60% { transform: rotate(216deg); }
+  70% { transform: rotate(252deg); }
+  80% { transform: rotate(288deg); }
+  90% { transform: rotate(324deg); }
+  100% { transform: rotate(360deg); }
 }
