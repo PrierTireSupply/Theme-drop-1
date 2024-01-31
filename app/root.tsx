@@ -23,7 +23,8 @@ import { Layout } from '~/components/Layout';
 import favicon from '../public/favicon.svg';
 import cssReset from './styles/reset.css';
 import cssApp from './styles/app.css';
-import cssHeaderFooter from './styles/header-footer.css';
+import cssHeader from './styles/header.css';
+import cssFooter from './styles/footer.css';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -51,7 +52,8 @@ export function links() {
     { rel: 'icon', type: 'image/svg+xml', href: favicon },
     { rel: 'stylesheet', href: cssReset },
     { rel: 'stylesheet', href: cssApp },
-    { rel: 'stylesheet', href: cssHeaderFooter },
+    { rel: 'stylesheet', href: cssHeader },
+    { rel: 'stylesheet', href: cssFooter },
     { rel: 'preconnect', href: 'https://cdn.shopify.com' },
     { rel: 'preconnect', href: 'https://shop.app' },
     { rel: 'preconnect', href: 'https://fonts.googleapis.com', crossOrigin: 'anonymous' },

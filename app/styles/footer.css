@@ -1,0 +1,29 @@
+
+
+/* footer */
+:root {
+  --footer-bg-color: var(--brand-grey-l);
+  --footer-link-color: var(--brand-color-secondary);
+  --footer-link-color-hover: var(--brand-color-action);
+}
+
+.footer {
+  background: var(--footer-bg-color);
+  padding: var(--size-64) var(--size-32);
+}
+
+.footer-menu {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  gap: var(--size-16);
+}
+
+.footer-menu-item {
+  color: var(--footer-link-color);
+}
+
+.footer-menu-item:focus,
+.footer-menu-item:hover {
+  --footer-link-color: var(--footer-link-color-hover);
+}

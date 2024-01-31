@@ -1,5 +1,5 @@
-import { Await } from '@remix-run/react';
-import { Suspense } from 'react';
+import {Await} from '@remix-run/react';
+import {Suspense} from 'react';
 
 import type {
   CartApiQueryFragment,
@@ -7,11 +7,11 @@ import type {
   HeaderQuery,
 } from 'storefrontapi.generated';
 
-import { Header, HeaderMenu } from '~/components/Header';
+import {Header, HeaderMenu} from '~/components/Header';
 
-import { Aside } from '~/components/Aside';
-import { Footer } from '~/components/Footer';
-import { CartMain } from '~/components/Cart';
+import {Aside} from '~/components/Aside';
+import {Footer} from '~/components/Footer';
+import {CartMain} from '~/components/Cart';
 
 import {
   PredictiveSearchForm,
@@ -56,7 +56,7 @@ function CartAside({cart}: {cart: LayoutProps['cart']}) {
         <Await resolve={cart}>
           {(cart) => {
             return <CartMain cart={cart} layout="aside" />;
-          }}
+         }}
         </Await>
       </Suspense>
     </Aside>
@@ -90,15 +90,12 @@ function SearchAside() {
   );
 }
 
-function MobileMenuAside({
-  menu,
-  shop,
-}: {
+function MobileMenuAside({menu, shop}: {
   menu: HeaderQuery['menu'];
   shop: HeaderQuery['shop'];
 }) {
   return (
-    <Aside id="mobile-menu-aside" classes="dialog" dialog="tread" heading="Categories">
+    <Aside id="mobile-menu-aside" classes="dialog" dialog="primary" heading="Categories">
 
       <HeaderMenu
         menu={menu}

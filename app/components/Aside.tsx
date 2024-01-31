@@ -22,9 +22,9 @@ export function Aside({
   children?: React.ReactNode;
 }) {
   return (
-    <div id={ id } className={ classes } dialog-type={ dialog }
+    <div id={id} className={classes} dialog-type={dialog}
       aria-modal
-      aria-label={ heading }
+      aria-label={heading}
       role="dialog"
     >
       <button
@@ -33,7 +33,7 @@ export function Aside({
         onClick={() => {
           history.go(-1);
           window.location.hash = '';
-        }}
+       }}
       />
       <div className="dialog-content">
         <h3 className="dialog-heading">{heading}</h3>

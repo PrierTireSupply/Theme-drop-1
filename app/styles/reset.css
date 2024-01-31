@@ -1,3 +1,8 @@
+:root {
+  --anchor-color: var(--brand-color-secondary);
+  --anchor-color-hover: var(--brand-color-action);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -12,13 +17,22 @@ body {
   line-height: var(--brand-line-height);
 }
 
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+}
+
 a, button {
   cursor: pointer;
   transition: var(--transition-norm);
 }
 
 a {
+  color: var(--anchor-color);
   text-decoration: none;
+}
+
+a:focus, a:hover {
+  --anchor-color: var(--anchor-color-hover);
 }
 
 img, video {
@@ -28,4 +42,8 @@ img, video {
 
 picture {
   line-height: 0;
+}
+
+li {
+  list-style: none;
 }

@@ -1,14 +1,16 @@
-import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {Await, useLoaderData, Link, type MetaFunction} from '@remix-run/react';
-import {Suspense} from 'react';
-import {Image, Money} from '@shopify/hydrogen';
+import { defer, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
+import { Await, useLoaderData, Link, type MetaFunction } from '@remix-run/react';
+import { Suspense } from 'react';
+import { Image, Money } from '@shopify/hydrogen';
 import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
 
+import { Hero } from '~/components/Hero';
+
 export const meta: MetaFunction = () => {
-  return [{title: 'Hydrogen | Home'}];
+  return [{ title: 'Hydrogen | Home' }];
 };
 
 export async function loader({context}: LoaderFunctionArgs) {
@@ -23,32 +25,10 @@ export async function loader({context}: LoaderFunctionArgs) {
 export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   return (
-    <div className="home">
-      <FeaturedCollection collection={data.featuredCollection} />
+    <>
+      <Hero collection={data.featuredCollection} theme="dark" />
       <RecommendedProducts products={data.recommendedProducts} />
-    </div>
-  );
-}
-
-function FeaturedCollection({
-  collection,
-}: {
-  collection: FeaturedCollectionFragment;
-}) {
-  if (!collection) return null;
-  const image = collection?.image;
-  return (
-    <Link
-      className="featured-collection"
-      to={`/collections/${collection.handle}`}
-    >
-      {image && (
-        <div className="featured-collection-image">
-          <Image data={image} sizes="100vw" />
-        </div>
-      )}
-      <h1>{collection.title}</h1>
-    </Link>
+    </>
   );
 }
 

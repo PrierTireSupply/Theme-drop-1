@@ -52,7 +52,7 @@ type FetchSearchResultsReturn = {
   searchResults: {
     results: SearchQuery | null;
     totalResults: number;
-  };
+ };
   searchTerm: string;
 };
 
@@ -73,19 +73,19 @@ export function SearchForm({searchTerm}: {searchTerm: string}) {
       if (event.key === 'k' && event.metaKey) {
         event.preventDefault();
         inputRef.current?.focus();
-      }
+     }
 
       if (event.key === 'Escape') {
         inputRef.current?.blur();
-      }
-    }
+     }
+   }
 
     document.addEventListener('keydown', handleKeyDown);
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
+   };
+ }, []);
 
   return (
     <Form method="get">
@@ -107,7 +107,7 @@ export function SearchResults({
 }: Pick<FetchSearchResultsReturn['searchResults'], 'results'>) {
   if (!results) {
     return null;
-  }
+ }
   const keys = Object.keys(results) as Array<keyof typeof results>;
   return (
     <div>
@@ -120,7 +120,7 @@ export function SearchResults({
             return resourceResults.nodes.length ? (
               <SearchResultPageGrid key="pages" pages={pageResults} />
             ) : null;
-          }
+         }
 
           if (resourceResults.nodes[0]?.__typename === 'Product') {
             const productResults = resourceResults as SearchQuery['products'];
@@ -130,7 +130,7 @@ export function SearchResults({
                 products={productResults}
               />
             ) : null;
-          }
+         }
 
           if (resourceResults.nodes[0]?.__typename === 'Article') {
             const articleResults = resourceResults as SearchQuery['articles'];
@@ -140,10 +140,10 @@ export function SearchResults({
                 articles={articleResults}
               />
             ) : null;
-          }
+         }
 
           return null;
-        })}
+       })}
     </div>
   );
 }
@@ -179,7 +179,7 @@ function SearchResultsProductsGrid({products}: Pick<SearchQuery, 'products'>) {
               </div>
             </div>
           );
-        }}
+       }}
       </Pagination>
       <br />
     </div>
@@ -264,13 +264,13 @@ export function PredictiveSearchForm({
       {q: newSearchTerm, limit: '6'},
       {method, action: localizedAction},
     );
-  }
+ }
 
   // ensure the passed input has a type of search, because SearchResults
   // will select the element based on the input
   useEffect(() => {
     inputRef?.current?.setAttribute('type', 'search');
-  }, []);
+ }, []);
 
   return (
     <fetcher.Form
@@ -281,9 +281,9 @@ export function PredictiveSearchForm({
         event.stopPropagation();
         if (!inputRef?.current || inputRef.current.value === '') {
           return;
-        }
+       }
         inputRef.current.blur();
-      }}
+     }}
     >
       {children({fetchResults, inputRef, fetcher})}
     </fetcher.Form>
@@ -300,11 +300,11 @@ export function PredictiveSearchResults() {
     searchInputRef.current.value = '';
     // close the aside
     window.location.href = event.currentTarget.href;
-  }
+ }
 
   if (!totalResults) {
     return <NoPredictiveSearchResults searchTerm={searchTerm} />;
-  }
+ }
   return (
     <div className="predictive-search-results">
       <div>
@@ -338,7 +338,7 @@ function NoPredictiveSearchResults({
 }) {
   if (!searchTerm.current) {
     return null;
-  }
+ }
   return (
     <p>
       No results found for <q>{searchTerm.current}</q>
@@ -362,7 +362,7 @@ function PredictiveSearchResult({
   const isSuggestions = type === 'queries';
   const categoryUrl = `/search?q=${
     searchTerm.current
-  }&type=${pluralToSingularSearchType(type)}`;
+ }&type=${pluralToSingularSearchType(type)}`;
 
   return (
     <div className="predictive-search-result" key={type}>
@@ -403,7 +403,7 @@ function SearchResultItem({goToSearchResult, item}: SearchResultItemProps) {
             <div
               dangerouslySetInnerHTML={{
                 __html: item.styledTitle,
-              }}
+             }}
             />
           ) : (
             <span>{item.title}</span>
@@ -432,18 +432,18 @@ function usePredictiveSearch(): UseSearchReturn {
 
   if (searchFetcher?.state === 'loading') {
     searchTerm.current = (searchFetcher.formData?.get('q') || '') as string;
-  }
+ }
 
   const search = (searchFetcher?.data?.searchResults || {
     results: NO_PREDICTIVE_SEARCH_RESULTS,
     totalResults: 0,
-  }) as NormalizedPredictiveSearch;
+ }) as NormalizedPredictiveSearch;
 
   // capture the search input element as a ref
   useEffect(() => {
     if (searchInputRef.current) return;
     searchInputRef.current = document.querySelector('input[type="search"]');
-  }, []);
+ }, []);
 
   return {...search, searchInputRef, searchTerm};
 }
@@ -468,11 +468,11 @@ function pluralToSingularSearchType(
     pages: 'PAGE',
     products: 'PRODUCT',
     queries: 'QUERY',
-  };
+ };
 
   if (typeof type === 'string') {
     return plural[type];
-  }
+ }
 
   return type.map((t) => plural[t]).join(',');
 }

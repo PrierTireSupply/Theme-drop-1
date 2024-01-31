@@ -1,46 +1,43 @@
-import { Await, NavLink } from '@remix-run/react';
-import { Suspense } from 'react';
-import type { HeaderQuery } from 'storefrontapi.generated';
-import type { LayoutProps } from './Layout';
-import { useRootLoaderData } from '~/root';
-import { Logo } from '~/components/Logo';
+import {Await, NavLink} from '@remix-run/react';
+import {Suspense} from 'react';
+import type {HeaderQuery} from 'storefrontapi.generated';
+import type {LayoutProps} from './Layout';
+import {useRootLoaderData} from '~/root';
+import {Logo} from '~/components/Logo';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
 type Viewport = 'desktop' | 'mobile';
 
-export function Header({ header, isLoggedIn, cart }: HeaderProps) {
+export function Header({header, isLoggedIn, cart}: HeaderProps) {
   const {shop, menu} = header;
   return (
     <header className="header">
 
       <nav className="header-menu" role="navigation">
 
-        <NavLink
-          className="header-logo"
-          prefetch="intent"
-          to="/"
-          end
-        >
+        <NavLink className="header-logo" prefetch="intent" to="/" end>
           <Logo size="small" mode="light" animate="false" />
         </NavLink>
 
         <HeaderMenuToggle />
 
-        <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+        <div className="header-spacer"></div>
+
+        <NavLink className="header-menu-item" prefetch="intent" to="/account">
+          {isLoggedIn ? 'Account' : 'Sign in'}
+        </NavLink>
+
+        <SearchToggle />
+
+        <CartToggle cart={cart} />
 
       </nav>
-
-      {/*<HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-      />*/}
 
     </header>
   );
 }
 
-export function HeaderMenu({ children, menu, primaryDomainUrl }: {
+export function HeaderMenu({children, menu, primaryDomainUrl}: {
   menu: HeaderProps['header']['menu'];
   primaryDomainUrl: HeaderQuery['shop']['primaryDomain']['url'];
 }) {
@@ -87,28 +84,16 @@ export function HeaderMenu({ children, menu, primaryDomainUrl }: {
             {item.title}
           </NavLink>
         );
-      })}
+     })}
       {children}
     </nav>
-  );
-}
-
-function HeaderCtas({ isLoggedIn, cart }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
-  return (
-    <>
-      <NavLink className="header-menu-item" prefetch="intent" to="/account">
-        {isLoggedIn ? 'Account' : 'Sign in'}
-      </NavLink>
-      <SearchToggle />
-      <CartToggle cart={cart} />
-    </>
   );
 }
 
 function HeaderMenuToggle() {
   return (
     <a href="#mobile-menu-aside" className="header-menu-item" role="button">
-      Menu
+      Categories
     </a>
   );
 }
@@ -120,7 +105,7 @@ function SearchToggle() {
 function CartBadge({count}: {count: number}) {
   return (
     <a href="#cart-aside" className="header-menu-item cart" role="button">
-      Cart <span className="cart-count">{count}</span>
+      Cart {count > 0 ? <span className="cart-count">{count}</span> : null}
     </a>
   );
 }
@@ -132,7 +117,7 @@ function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
         {(cart) => {
           if (!cart) return <CartBadge count={0} />;
           return <CartBadge count={cart.totalQuantity || 0} />;
-        }}
+       }}
       </Await>
     </Suspense>
   );
@@ -149,7 +134,7 @@ const FALLBACK_HEADER_MENU = {
       type: 'HTTP',
       url: '/collections',
       items: [],
-    },
+   },
     {
       id: 'gid://shopify/MenuItem/461609533496',
       resourceId: null,
@@ -158,7 +143,7 @@ const FALLBACK_HEADER_MENU = {
       type: 'HTTP',
       url: '/blogs/journal',
       items: [],
-    },
+   },
     {
       id: 'gid://shopify/MenuItem/461609566264',
       resourceId: null,
@@ -167,7 +152,7 @@ const FALLBACK_HEADER_MENU = {
       type: 'HTTP',
       url: '/policies',
       items: [],
-    },
+   },
     {
       id: 'gid://shopify/MenuItem/461609599032',
       resourceId: 'gid://shopify/Page/92591030328',
@@ -176,6 +161,6 @@ const FALLBACK_HEADER_MENU = {
       type: 'PAGE',
       url: '/pages/about',
       items: [],
-    },
+   },
   ],
 };
