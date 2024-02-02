@@ -1,4 +1,4 @@
-export function Logo({size, mode, animate}) {
+export function Logo({ size, mode, animate }) {
 
   return (
     <h1 className="logo" logo-size={size} logo-mode={mode} logo-animate={animate}>

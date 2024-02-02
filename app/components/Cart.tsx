@@ -1,8 +1,8 @@
-import {Link} from '@remix-run/react';
-import {CartForm, Image, Money} from '@shopify/hydrogen';
-import type {CartLineUpdateInput} from '@shopify/hydrogen/storefront-api-types';
-import type {CartApiQueryFragment} from 'storefrontapi.generated';
-import {useVariantUrl} from '~/utils';
+import { Link } from '@remix-run/react';
+import { CartForm, Image, Money } from '@shopify/hydrogen';
+import type { CartLineUpdateInput } from '@shopify/hydrogen/storefront-api-types';
+import type { CartApiQueryFragment } from 'storefrontapi.generated';
+import { useVariantUrl } from '~/utils';
 
 type CartLine = CartApiQueryFragment['lines']['nodes'][0];
 
@@ -18,7 +18,7 @@ export function CartMain({layout, cart}: CartMainProps) {
 
   return (
     <>
-      {/*<CartEmpty hidden={linesCount} layout={layout} />*/}
+      <CartEmpty hidden={linesCount} layout={layout} />
       <CartDetails cart={cart} layout={layout} />
     </>
   );
@@ -32,12 +32,12 @@ function CartDetails({layout, cart}: CartMainProps) {
 
       <CartLines lines={cart?.lines} layout={layout} />
 
-      {/*cartHasItems && (
+      {cartHasItems && (
         <CartSummary cost={cart.cost} layout={layout}>
           <CartDiscounts discountCodes={cart.discountCodes} />
           <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
         </CartSummary>
-      )*/}
+      )}
 
     </div>
   );
@@ -98,8 +98,9 @@ function CartLineItem({layout, line}: {
             {product.title}
           </Link>
 
-          {/*<CartLinePrice line={line} as="span" />*/}
+          <CartLinePrice line={line} as="div" />
 
+          {/*
           <ul className="product-card-options">
             {selectedOptions.map((option) => (
               <li key={option.name} className="product-card-option">
@@ -107,6 +108,7 @@ function CartLineItem({layout, line}: {
               </li>
             ))}
           </ul>
+          */}
 
           <CartLineQuantity line={line} />
 
@@ -122,12 +124,9 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
   if (!checkoutUrl) return null;
 
   return (
-    <div>
-      <a href={checkoutUrl} target="_self">
-        <p>Continue to Checkout &rarr;</p>
-      </a>
-      <br />
-    </div>
+    <a className="btn-primary" button-type="full" href={checkoutUrl} target="_self">
+      Continue to Checkout
+    </a>
   );
 }
 
@@ -140,23 +139,17 @@ export function CartSummary({
   cost: CartApiQueryFragment['cost'];
   layout: CartMainProps['layout'];
 }) {
-  const className = layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
+  // const className = layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
 
   return (
-    <div aria-labelledby="cart-summary" className={className}>
-      <h4>Totals</h4>
-      <dl className="cart-subtotal">
-        <dt>Subtotal</dt>
-        <dd>
-          {cost?.subtotalAmount?.amount ? (
-            <Money data={cost?.subtotalAmount} />
-          ) : (
-            '-'
-          )}
-        </dd>
-      </dl>
+    <section className="cart-summary" aria-label="Cart Summary">
+      <h3 className="cart-summary-title">Total</h3>
+      <h3 className="cart-summary-subtitle">Subtotal</h3>
+      {cost?.subtotalAmount?.amount ? (
+        <Money className="cart-summary-subtotal" data={cost?.subtotalAmount} />
+      ): ('-')}
       {children}
-    </div>
+    </section>
   );
 }
 
@@ -175,10 +168,10 @@ function CartLineQuantity({line}: {line: CartLine}) {
   const nextQuantity = Number((quantity + 1).toFixed(0));
 
   return (
-    <div className="product-card-qty">
+    <>
 
-      <div className="product-card-count">
-        Quantity: {quantity}
+      <div className="product-card-qty">
+        {quantity}
       </div>
 
       <div className="product-card-update">
@@ -212,7 +205,7 @@ function CartLineQuantity({line}: {line: CartLine}) {
 
       </div>
 
-    </div>
+    </>
   );
 }
 
@@ -236,9 +229,7 @@ function CartLinePrice({
     }
 
     return (
-      <div>
-        <Money withoutTrailingZeros {...passthroughProps} data={moneyV2} />
-      </div>
+      <Money className="product-card-price" withoutTrailingZeros {...passthroughProps} data={moneyV2} />
     );
 }
 
@@ -250,14 +241,15 @@ export function CartEmpty({
   layout?: CartMainProps['layout'];
 }) {
   return (
-    <div hidden={hidden}>
+    <div className="cart-empty" hidden={hidden}>
+
       <br />
-      <p>
-        Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
-        started!
-      </p>
+      <p>Looks like you haven't added anything yet, let's get you started!</p>
       <br />
+
       <Link
+        className="btn-primary"
+        button-type="full"
         to="/collections"
         onClick={() => {
           if (layout === 'aside') {
@@ -265,15 +257,13 @@ export function CartEmpty({
          }
        }}
       >
-        Continue shopping →
+        Continue Shopping
       </Link>
     </div>
   );
 }
 
-function CartDiscounts({
-  discountCodes,
-}: {
+function CartDiscounts({discountCodes}: {
   discountCodes: CartApiQueryFragment['discountCodes'];
 }) {
   const codes: string[] =
@@ -282,30 +272,26 @@ function CartDiscounts({
       ?.map(({code}) => code) || [];
 
   return (
-    <div>
-      {/* Have existing discount, display it with a remove option */}
-      <dl hidden={!codes.length}>
-        <div>
-          <dt>Discount(s)</dt>
-          <UpdateDiscountForm>
-            <div className="cart-discount">
-              <code>{codes?.join(', ')}</code>
-              &nbsp;
-              <button>Remove</button>
-            </div>
-          </UpdateDiscountForm>
-        </div>
-      </dl>
+    <>
 
-      {/* Show an input to apply a discount */}
+      <div className="cart-summary-discount" hidden={!codes.length}>
+        <h3 className="cart-summary-subtitle">Discount(s)</h3>
+        <UpdateDiscountForm>
+          <div className="cart-summary-discount-codes">
+            <code>{codes?.join(', ')}</code>
+            <button className="btn-secondary" button-type="small">Remove</button>
+          </div>
+        </UpdateDiscountForm>
+      </div>
+
       <UpdateDiscountForm discountCodes={codes}>
-        <div>
-          <input type="text" name="discountCode" placeholder="Discount code" />
-          &nbsp;
-          <button type="submit">Apply</button>
+        <div className="cart-summary-discount-add">
+          <input input-type="full-flat" type="text" name="discountCode" aria-label="Discount code" placeholder="Discount code" />
+          <button className="btn-secondary" button-type="full-flat" type="submit">Apply</button>
         </div>
       </UpdateDiscountForm>
-    </div>
+
+    </>
   );
 }
 

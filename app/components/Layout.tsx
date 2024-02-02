@@ -1,5 +1,5 @@
-import {Await} from '@remix-run/react';
-import {Suspense} from 'react';
+import { Await } from '@remix-run/react';
+import { Suspense } from 'react';
 
 import type {
   CartApiQueryFragment,
@@ -7,11 +7,11 @@ import type {
   HeaderQuery,
 } from 'storefrontapi.generated';
 
-import {Header, HeaderMenu} from '~/components/Header';
+import { Header, HeaderMenu } from '~/components/Header';
 
-import {Aside} from '~/components/Aside';
-import {Footer} from '~/components/Footer';
-import {CartMain} from '~/components/Cart';
+import { Aside } from '~/components/Aside';
+import { Footer } from '~/components/Footer';
+import { CartMain } from '~/components/Cart';
 
 import {
   PredictiveSearchForm,

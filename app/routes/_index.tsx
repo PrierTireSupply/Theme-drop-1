@@ -8,6 +8,9 @@ import type {
 } from 'storefrontapi.generated';
 
 import { Hero } from '~/components/Hero';
+import { Grid } from '~/components/Grid';
+import { ProductCard } from '~/components/ProductCard';
+import { Section } from '~/components/Section';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Hydrogen | Home' }];
@@ -18,7 +21,6 @@ export async function loader({context}: LoaderFunctionArgs) {
   const {collections} = await storefront.query(FEATURED_COLLECTION_QUERY);
   const featuredCollection = collections.nodes[0];
   const recommendedProducts = storefront.query(RECOMMENDED_PRODUCTS_QUERY);
-
   return defer({featuredCollection, recommendedProducts});
 }
 
@@ -26,47 +28,58 @@ export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   return (
     <>
-      <Hero collection={data.featuredCollection} theme="dark" />
-      <RecommendedProducts products={data.recommendedProducts} />
-    </>
-  );
-}
 
-function RecommendedProducts({
-  products,
-}: {
-  products: Promise<RecommendedProductsQuery>;
-}) {
-  return (
-    <div className="recommended-products">
-      <h2>Recommended Products</h2>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Await resolve={products}>
-          {({products}) => (
-            <div className="recommended-products-grid">
-              {products.nodes.map((product) => (
-                <Link
-                  key={product.id}
-                  className="recommended-product"
-                  to={`/products/${product.handle}`}
-                >
-                  <Image
-                    data={product.images.nodes[0]}
-                    aspectRatio="1/1"
-                    sizes="(min-width: 45em) 20vw, 50vw"
+      <Hero
+        theme="light overlay"
+        img={data.featuredCollection?.image}
+        title={data.featuredCollection.title}
+        copy={data.featuredCollection.copy || "Hello world, this is copy!"}
+        cta={data.featuredCollection.cta || "This is a CTA"}
+        ctaURL={`/collections/${data.featuredCollection.handle}`}
+      />
+
+      <Section
+        title="Recommended Products"
+        copy="Hello world, this is copy!"
+      >
+
+        <Suspense fallback={<div>Loading...</div>}>
+          <Await resolve={data.recommendedProducts}>
+
+            {({products}) => (
+              <Grid gap="8/16" desktop="4" tablet="4" mobile="2">
+                {products.nodes.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    layout="grid"
+                    url={`/products/${product.handle}`}
+                    img={product.images.nodes[0]}
+                    imgSize="(min-width: 45em) 20vw, 50vw"
+                    imgAlt={product.alt}
+                    title={product.title}
+                    price={product.priceRange.minVariantPrice}
                   />
-                  <h4>{product.title}</h4>
-                  <small>
-                    <Money data={product.priceRange.minVariantPrice} />
-                  </small>
-                </Link>
-              ))}
-            </div>
-          )}
-        </Await>
-      </Suspense>
-      <br />
-    </div>
+                ))}
+              </Grid>
+            )}
+
+          </Await>
+        </Suspense>
+
+      </Section>
+
+      <Hero
+        theme="dark overlay"
+        height="540"
+        img={data.featuredCollection?.image}
+        position="bottom-left"
+        title={data.featuredCollection.title}
+        copy={data.featuredCollection.copy || "Hello world, this is copy!"}
+        cta={data.featuredCollection.cta || "This is a CTA"}
+        ctaURL={`/collections/${data.featuredCollection.handle}`}
+      />
+
+    </>
   );
 }
 
@@ -116,7 +129,7 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   }
   query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
+    products(first: 8, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...RecommendedProduct
       }
