@@ -425,6 +425,55 @@
   margin-top: var(--size-8);
 }
 
+/* product details */
+@media only screen and (min-width: 768px) {
+
+  [grid-desktop="pdp"] .product-details-image,
+  [grid-tablet="pdp"] .product-details-image {
+    grid-column: span 8;
+  }
+
+  [grid-desktop="pdp"] .product-details,
+  [grid-tablet="pdp"] .product-details {
+    grid-column: span 4;
+  }
+
+}
+
+[grid-gap="pdp"] {
+  gap: var(--size-16) var(--size-32);
+}
+
+.product-details-title {
+  font-size: var(--size-40);
+  font-style: italic;
+}
+
+.product-details-price {
+  margin: var(--size-16) 0;
+}
+
+.product-details-subtitle {
+  font-size: var(--size-16);
+}
+
+.product-details-form,
+.product-details-options {
+  margin-bottom: var(--size-32);
+}
+
+.product-details-options-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--size-4);
+  margin-top: var(--size-8);
+}
+
+.product-details-description {
+  margin-top: var(--size-8);
+  opacity: .72;
+}
+
 /* grid */
 .grid {
   display: grid;
@@ -433,6 +482,10 @@
 
 [grid-gap="8"] {
   gap: var(--size-8);
+}
+
+[grid-gap="16"] {
+  gap: var(--size-16);
 }
 
 [grid-gap="8/16"] {
@@ -445,7 +498,7 @@
   [grid-desktop="4"] > * { grid-column: span 3; }
 }
 
-@media only screen and (min-width: 768px)and (max-width:1024px) {
+@media only screen and (min-width: 768px) and (max-width:1024px) {
   [grid-tablet="2"] > * { grid-column: span 6; }
   [grid-tablet="3"] > * { grid-column: span 4; }
   [grid-tablet="4"] > * { grid-column: span 3; }
@@ -517,10 +570,6 @@
 
 [product-card-type="grid"] .product-card-asset {
   margin-bottom: var(--size-16);
-}
-
-[product-card-type="grid"] .product-card-price {
-  margin-top: var(--size-4);
 }
 
 [product-card-type="aside"] {
@@ -656,14 +705,24 @@
 }
 
 .section-header {
-  margin-bottom: var(--size-16);
+  margin-bottom: var(--size-32);
 }
 
 .section-title {
   font-size: var(--section-title-font-size);
+  font-style: italic;
 }
 
 .section-copy {
   font-size: var(--section-copy-font-size);
   margin-top: var(--size-8);
+  opacity: .72;
+}
+
+@media only screen and (min-width: 1025px) {
+
+  [section-theme~="plp"] .section-header {
+    max-width: 50%;
+  }
+
 }

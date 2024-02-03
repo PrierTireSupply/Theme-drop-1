@@ -55,7 +55,7 @@ export default function Homepage() {
                     url={`/products/${product.handle}`}
                     img={product.images.nodes[0]}
                     imgSize="(min-width: 45em) 20vw, 50vw"
-                    imgAlt={product.alt}
+                    imgAlt={product.title}
                     title={product.title}
                     price={product.priceRange.minVariantPrice}
                   />

@@ -9,6 +9,10 @@ import {
 import type {ProductItemFragment} from 'storefrontapi.generated';
 import {useVariantUrl} from '~/utils';
 
+import { Section } from '~/components/Section';
+import { Grid } from '~/components/Grid';
+import { ProductCard } from '~/components/ProductCard';
+
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
 };
@@ -17,7 +21,7 @@ export async function loader({request, params, context}: LoaderFunctionArgs) {
   const {handle} = params;
   const {storefront} = context;
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 8,
+    pageBy: 12,
   });
 
   if (!handle) {
@@ -37,76 +41,59 @@ export async function loader({request, params, context}: LoaderFunctionArgs) {
 }
 
 export default function Collection() {
+
   const {collection} = useLoaderData<typeof loader>();
 
   return (
-    <div className="collection">
-      <h1>{collection.title}</h1>
-      <p className="collection-description">{collection.description}</p>
+
+    <Section theme="plp" title={collection.title} copy={collection.description}>
+
       <Pagination connection={collection.products}>
         {({nodes, isLoading, PreviousLink, NextLink}) => (
           <>
+
             <PreviousLink>
-              {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
+              {isLoading ? 'Loading...' : <span>Load previous</span>}
             </PreviousLink>
+
             <ProductsGrid products={nodes} />
-            <br />
+
             <NextLink>
-              {isLoading ? 'Loading...' : <span>Load more ↓</span>}
+              {isLoading ? 'Loading...' : <span>Load more</span>}
             </NextLink>
+
           </>
         )}
       </Pagination>
-    </div>
+
+    </Section>
+
   );
 }
 
 function ProductsGrid({products}: {products: ProductItemFragment[]}) {
+
   return (
-    <div className="products-grid">
+
+    <Grid gap="8/16" desktop="4" tablet="4" mobile="2">
+
       {products.map((product, index) => {
         return (
-          <ProductItem
+          <ProductCard
             key={product.id}
-            product={product}
-            loading={index < 8 ? 'eager' : undefined}
+            layout="grid"
+            url={useVariantUrl(product.handle, product.variants.nodes[0].selectedOptions)}
+            img={product.featuredImage}
+            imgSize="(min-width: 45em) 20vw, 50vw"
+            imgAlt={product.title}
+            title={product.title}
+            price={product.priceRange.minVariantPrice}
           />
         );
       })}
-    </div>
-  );
-}
 
-function ProductItem({
-  product,
-  loading,
-}: {
-  product: ProductItemFragment;
-  loading?: 'eager' | 'lazy';
-}) {
-  const variant = product.variants.nodes[0];
-  const variantUrl = useVariantUrl(product.handle, variant.selectedOptions);
-  return (
-    <Link
-      className="product-item"
-      key={product.id}
-      prefetch="intent"
-      to={variantUrl}
-    >
-      {product.featuredImage && (
-        <Image
-          alt={product.featuredImage.altText || product.title}
-          aspectRatio="1/1"
-          data={product.featuredImage}
-          loading={loading}
-          sizes="(min-width: 45em) 400px, 100vw"
-        />
-      )}
-      <h4>{product.title}</h4>
-      <small>
-        <Money data={product.priceRange.minVariantPrice} />
-      </small>
-    </Link>
+    </Grid>
+
   );
 }
 

@@ -6,17 +6,19 @@ export function Section({ children, theme, title, copy }) {
 
       <div wrapper-type="structure">
 
-        <header className="section-header">
+        {(title || copy) && (
+          <header className="section-header">
 
-          {title && (
-            <h2 className="section-title">{title}</h2>
-          )}
+            {title && (
+              <h2 className="section-title">{title}</h2>
+            )}
 
-          {copy && (
-            <p className="section-copy">{copy}</p>
-          )}
+            {copy && (
+              <p className="section-copy">{copy}</p>
+            )}
 
-        </header>
+          </header>
+        )}
 
         {children}
 

@@ -16,11 +16,12 @@ export function ProductCard({
     <div className="product-card" product-card-type={layout}>
 
       {img && (
-        <Link className="product-card-asset" to={url}>
+        <Link className="product-card-asset" to={url} prefetch="intent">
           <Image
             data={img}
             aspectRatio="1/1"
             sizes={imgSize}
+            loading="lazy"
             alt={imgAlt}
           />
         </Link>
@@ -28,7 +29,7 @@ export function ProductCard({
 
       <div className="product-card-content">
 
-        <Link className="product-card-title" to={url}>
+        <Link className="product-card-title" to={url} prefetch="intent">
           {title}
         </Link>
 
