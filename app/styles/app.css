@@ -3,7 +3,8 @@
   --brand-black: #2e2e2e;
   --brand-white: #fff;
   --brand-grey-l: #ecf0f1;
-  --brand-grey-d: #bdc3c7;
+  --brand-grey-m: #bdc3c7;
+  --brand-grey-d: #5d6163;
   --brand-blue-l: #3498db;
   --brand-blue-m: #2980b9;
   --brand-blue-d: #2c3e50;
@@ -51,7 +52,7 @@
 
   /* general */
   --border-radius: var(--size-4);
-  --landmark-spacing: 8vh;
+  --landmark-spacing: 4vh;
 
   /* transitions */
   --transition-fast: all .16s ease-in-out 0s;
@@ -62,7 +63,7 @@
 
 /* inputs */
 :root {
-  --input-border-color: var(--brand-grey-d);
+  --input-border-color: var(--brand-grey-m);
   --input-border-radius: var(--border-radius);
   --input-height: var(--size-40);
 }
@@ -78,16 +79,19 @@
   line-height: calc(var(--input-height) - 2px);
 }
 
-[input-type="full-flat"] {
+[input-type~="full"] {
+  width: 100%;
+}
+
+[input-type~="flat"] {
   border-bottom: none;
   border-radius: var(--input-border-radius) var(--input-border-radius) 0 0;
-  width: 100%;
 }
 
 /* buttons */
 :root {
   --btn-bg-color: var(--brand-color-primary);
-  --btn-border-color: var(--brand-color-primary);
+  --btn-border-color: transparent;
   --btn-border-radius: var(--border-radius);
   --btn-border-size: 0;
   --btn-font-color: var(--brand-white);
@@ -113,64 +117,73 @@
   transition: var(--transition-fast);
 }
 
-[button-type="full"] {
+[button-type][disabled],
+[button-type][disabled]:focus,
+[button-type][disabled]:hover {
+  --btn-bg-color: var(--brand-grey-l);
+  --btn-font-color: var(--brand-grey-d);
+  cursor: not-allowed;
+}
+
+[button-type~="full"] {
   width: 100%;
 }
 
-[button-type="full-flat"] {
+[button-type~="flat"] {
   border-radius: 0 0 var(--btn-border-radius) var(--btn-border-radius);
-  width: 100%;
 }
 
-[button-type="icon"] {
+[button-type~="icon"] {
   --btn-border-radius: 50%;
   --btn-font-size: var(--size-32);
   --btn-padding: 0;
   --btn-width: var(--size-40);
 }
 
-[button-type="small"] {
+[button-type~="small"] {
   --btn-font-size: var(--size-12);
   --btn-padding: var(--size-8);
   --btn-height: var(--size-24);
 }
 
-[button-type="icon-small"] {
+[button-type~="icon-small"] {
   --btn-font-size: var(--size-16);
   --btn-padding: 0;
   --btn-height: var(--size-24);
   --btn-width: var(--size-24);
 }
 
+[button-type~="pill"] {
+  --btn-border-radius: var(--size-12);
+  --btn-font-size: var(--size-12);
+  --btn-padding: var(--size-12);
+  --btn-height: var(--size-24);
+}
+
 .btn-primary {
   --btn-bg-color: var(--brand-color-primary);
-  --btn-border-color: var(--brand-color-primary);
   --btn-font-color: var(--brand-white);
 }
 
 .btn-primary:focus,
 .btn-primary:hover {
   --btn-bg-color: var(--brand-color-action);
-  --btn-border-color: var(--brand-color-action);
   --btn-font-color: var(--brand-white);
 }
 
 .btn-secondary {
   --btn-bg-color: var(--brand-color-secondary);
-  --btn-border-color: var(--brand-color-secondary);
   --btn-font-color: var(--brand-white);
 }
 
 .btn-secondary:focus,
 .btn-secondary:hover {
   --btn-bg-color: var(--brand-color-action);
-  --btn-border-color: var(--brand-color-action);
   --btn-font-color: var(--brand-white);
 }
 
 .btn-tertiary {
   --btn-bg-color: var(--brand-grey-l);
-  --btn-border-color: var(--brand-grey-d);
   --btn-font-color: var(--brand-color-secondary);
 }
 
@@ -392,7 +405,7 @@
 }
 
 .cart-summary-title {
-  border-bottom: solid var(--size-1) var(--brand-grey-d);
+  border-bottom: solid var(--size-1) var(--brand-grey-m);
   font-size: var(--size-24);
   margin-bottom: var(--size-8);
   padding-bottom: var(--size-8);
@@ -400,6 +413,7 @@
 
 .cart-summary-subtitle {
   font-size: var(--size-16);
+  font-weight: normal;
   opacity: .72;
 }
 
@@ -444,22 +458,33 @@
   gap: var(--size-16) var(--size-32);
 }
 
+.product-details-image {
+  line-height: 0;
+}
+
 .product-details-title {
   font-size: var(--size-40);
-  font-style: italic;
 }
 
 .product-details-price {
+  font-size: var(--size-20);
+  font-weight: bold;
   margin: var(--size-16) 0;
 }
 
 .product-details-subtitle {
-  font-size: var(--size-16);
+  font-size: var(--size-20);
 }
 
 .product-details-form,
 .product-details-options {
   margin-bottom: var(--size-32);
+}
+
+.product-details-options-title {
+  font-size: var(--size-12);
+  font-weight: normal;
+  opacity: .72;
 }
 
 .product-details-options-list {
@@ -710,7 +735,6 @@
 
 .section-title {
   font-size: var(--section-title-font-size);
-  font-style: italic;
 }
 
 .section-copy {

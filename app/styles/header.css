@@ -10,6 +10,10 @@
   padding: var(--size-16) var(--size-32);
 }
 
+.header-logo {
+  min-height: var(--size-48);
+}
+
 .header-menu {
   align-items: center;
   display: flex;

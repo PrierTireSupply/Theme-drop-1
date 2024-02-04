@@ -286,8 +286,8 @@ function CartDiscounts({discountCodes}: {
 
       <UpdateDiscountForm discountCodes={codes}>
         <div className="cart-summary-discount-add">
-          <input input-type="full-flat" type="text" name="discountCode" aria-label="Discount code" placeholder="Discount code" />
-          <button className="btn-secondary" button-type="full-flat" type="submit">Apply</button>
+          <input input-type="full flat" type="text" name="discountCode" aria-label="Discount code" placeholder="Discount code" />
+          <button className="btn-secondary" button-type="full flat" type="submit">Apply</button>
         </div>
       </UpdateDiscountForm>
 

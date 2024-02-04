@@ -11,6 +11,7 @@ import type {
   ProductFragment,
   ProductVariantsQuery,
   ProductVariantFragment,
+  RecommendedProductsQuery,
 } from 'storefrontapi.generated';
 import {
   Image,
@@ -28,6 +29,7 @@ import {getVariantUrl} from '~/utils';
 
 import { Section } from '~/components/Section';
 import { Grid } from '~/components/Grid';
+import { ProductCard } from '~/components/ProductCard';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Hydrogen | ${data?.product.title ?? ''}`}];
@@ -72,7 +74,8 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
   if (firstVariantIsDefault) {
     product.selectedVariant = firstVariant;
-  } else {
+  }
+  else {
     // if no selected variant was returned from the selected options,
     // we redirect to the first variant's url with it's selected options applied
     if (!product.selectedVariant) {
@@ -89,7 +92,10 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     variables: {handle},
   });
 
-  return defer({product, variants});
+  // testing
+  const recommendedProducts = storefront.query(RECOMMENDED_PRODUCTS_QUERY);
+
+  return defer({product, variants, recommendedProducts});
 }
 
 function redirectToFirstVariant({product,request}: {
@@ -115,7 +121,11 @@ function redirectToFirstVariant({product,request}: {
 export default function Product() {
   const {product, variants} = useLoaderData<typeof loader>();
   const {selectedVariant} = product;
+  const data = useLoaderData<typeof loader>();
   return (
+
+    <>
+
     <Section theme="pdp">
 
       <Grid gap="pdp" desktop="pdp" tablet="pdp" mobile="1">
@@ -131,6 +141,39 @@ export default function Product() {
       </Grid>
 
     </Section>
+
+    <Section
+      title="Recommended Products"
+      copy="Hello world, this is copy!"
+    >
+
+      <Suspense fallback={<div>Loading...</div>}>
+        <Await resolve={data.recommendedProducts}>
+
+          {({products}) => (
+            <Grid gap="8/16" desktop="4" tablet="4" mobile="2">
+              {products.nodes.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  layout="grid"
+                  url={`/products/${product.handle}`}
+                  img={product.images.nodes[0]}
+                  imgSize="(min-width: 45em) 20vw, 50vw"
+                  imgAlt={product.title}
+                  title={product.title}
+                  price={product.priceRange.minVariantPrice}
+                />
+              ))}
+            </Grid>
+          )}
+
+        </Await>
+      </Suspense>
+
+    </Section>
+
+    </>
+
   );
 }
 
@@ -265,7 +308,7 @@ function ProductOptions({option}: {option: VariantOption}) {
 
     <div className="product-details-options" key={option.name}>
 
-      <h3 className="product-details-subtitle">
+      <h3 className="product-details-options-title">
         {option.name}
       </h3>
 
@@ -275,7 +318,7 @@ function ProductOptions({option}: {option: VariantOption}) {
             <li className="product-details-option" key={option.name + value}>
               <Link
                 className={
-                  (isActive ? 'btn-primary' : 'btn-secondary') +
+                  (isActive ? 'btn-secondary' : 'btn-tertiary') +
                   (isAvailable ? '' : ' disabled')
                 }
                 button-type="small"
@@ -426,6 +469,37 @@ const VARIANTS_QUERY = `#graphql
   ) @inContext(country: $country, language: $language) {
     product(handle: $handle) {
       ...ProductVariants
+    }
+  }
+` as const;
+
+const RECOMMENDED_PRODUCTS_QUERY = `#graphql
+  fragment RecommendedProduct on Product {
+    id
+    title
+    handle
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    images(first: 1) {
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+      }
+    }
+  }
+  query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
+      nodes {
+        ...RecommendedProduct
+      }
     }
   }
 ` as const;

@@ -52,7 +52,7 @@ export function HeaderMenu({children, menu, primaryDomainUrl}: {
   return (
     <nav className={className} role="navigation">
 
-      <NavLink
+      {/*<NavLink
         className="primary-menu-item"
         end
         onClick={closeAside}
@@ -60,7 +60,7 @@ export function HeaderMenu({children, menu, primaryDomainUrl}: {
         to="/"
       >
         Home
-      </NavLink>
+      </NavLink>*/}
 
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
