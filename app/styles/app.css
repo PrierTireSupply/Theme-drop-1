@@ -1,25 +1,26 @@
 :root {
+
   /* colors */
-  --brand-black: #2e2e2e;
-  --brand-white: #fff;
-  --brand-grey-l: #ecf0f1;
-  --brand-grey-m: #bdc3c7;
-  --brand-grey-d: #5d6163;
-  --brand-blue-l: #3498db;
-  --brand-blue-m: #2980b9;
-  --brand-blue-d: #2c3e50;
+  --color-black: #2e2e2e;
+  --color-white: #fff;
+  --color-grey-l: #ecf0f1;
+  --color-grey-m: #bdc3c7;
+  --color-grey-d: #5d6163;
+  --color-blue-l: #3498db;
+  --color-blue-m: #2980b9;
+  --color-blue-d: #2c3e50;
 
   /* branding */
-  --brand-color-primary: var(--brand-blue-m);
-  --brand-color-secondary: var(--brand-blue-d);
-  --brand-color-action: var(--brand-blue-l);
+  --color-primary: var(--color-blue-m);
+  --color-secondary: var(--color-blue-d);
+  --color-action: var(--color-blue-l);
 
   /* fonts */
-  --brand-font-color: var(--brand-black);
-  --brand-font-family: "Roboto", sans-serif;
-  --brand-font-size: 16px;
-  --brand-font-weight: 400;
-  --brand-line-height: 1.5;
+  --font-color: var(--color-black);
+  --font-family: "Roboto", sans-serif;
+  --font-size: 16px;
+  --font-weight: 400;
+  --font-line-height: 1.5;
 
   /* shadows */
   --box-shadow-1: 0 var(--size-1) var(--size-4) rgba(0,0,0,.32);
@@ -63,7 +64,7 @@
 
 /* inputs */
 :root {
-  --input-border-color: var(--brand-grey-m);
+  --input-border-color: var(--color-grey-m);
   --input-border-radius: var(--border-radius);
   --input-height: var(--size-40);
 }
@@ -90,11 +91,11 @@
 
 /* buttons */
 :root {
-  --btn-bg-color: var(--brand-color-primary);
+  --btn-bg-color: var(--color-primary);
   --btn-border-color: transparent;
   --btn-border-radius: var(--border-radius);
   --btn-border-size: 0;
-  --btn-font-color: var(--brand-white);
+  --btn-font-color: var(--color-white);
   --btn-font-size: inherit; /* 16px or 1rem */
   --btn-padding: var(--size-24);
   --btn-height: var(--size-40);
@@ -120,8 +121,8 @@
 [button-type][disabled],
 [button-type][disabled]:focus,
 [button-type][disabled]:hover {
-  --btn-bg-color: var(--brand-grey-l);
-  --btn-font-color: var(--brand-grey-d);
+  --btn-bg-color: var(--color-grey-l);
+  --btn-font-color: var(--color-grey-d);
   cursor: not-allowed;
 }
 
@@ -161,41 +162,41 @@
 }
 
 .btn-primary {
-  --btn-bg-color: var(--brand-color-primary);
-  --btn-font-color: var(--brand-white);
+  --btn-bg-color: var(--color-primary);
+  --btn-font-color: var(--color-white);
 }
 
 .btn-primary:focus,
 .btn-primary:hover {
-  --btn-bg-color: var(--brand-color-action);
-  --btn-font-color: var(--brand-white);
+  --btn-bg-color: var(--color-action);
+  --btn-font-color: var(--color-white);
 }
 
 .btn-secondary {
-  --btn-bg-color: var(--brand-color-secondary);
-  --btn-font-color: var(--brand-white);
+  --btn-bg-color: var(--color-secondary);
+  --btn-font-color: var(--color-white);
 }
 
 .btn-secondary:focus,
 .btn-secondary:hover {
-  --btn-bg-color: var(--brand-color-action);
-  --btn-font-color: var(--brand-white);
+  --btn-bg-color: var(--color-action);
+  --btn-font-color: var(--color-white);
 }
 
 .btn-tertiary {
-  --btn-bg-color: var(--brand-grey-l);
-  --btn-font-color: var(--brand-color-secondary);
+  --btn-bg-color: var(--color-grey-l);
+  --btn-font-color: var(--color-secondary);
 }
 
 .btn-tertiary:focus,
 .btn-tertiary:hover {
-  --btn-bg-color: var(--brand-color-secondary);
-  --btn-font-color: var(--brand-white);
+  --btn-bg-color: var(--color-secondary);
+  --btn-font-color: var(--color-white);
 }
 
 /* dialog */
 :root {
-  --dialog-bg-color: var(--brand-grey-l);
+  --dialog-bg-color: var(--color-grey-l);
   --dialog-bg-blur: var(--size-4);
   --dialog-bg-transition: var(--transition-norm);
   --dialog-padding: var(--size-32);
@@ -221,6 +222,10 @@
   inset: 0;
   z-index: 9;
   transition: var(--dialog-bg-transition);
+}
+
+.dialog-heading {
+  font-size: var(--size-24);
 }
 
 .dialog-close-area {
@@ -286,11 +291,11 @@
 
 /* logo */
 :root {
-  --logo-color: var(--brand-white);
+  --logo-color: var(--color-white);
   --logo-font-size-1: var(--size-48);
   --logo-font-size-2: var(--size-20);
   --logo-txt-shadow: var(--txt-shadow-1);
-  --logo-tire-wheel: var(--brand-white);
+  --logo-tire-wheel: var(--color-white);
   --logo-tire-shadow: var(--box-shadow-1);
   --logo-tire-size: var(--size-72);
   --logo-tire-spacing: var(--size-64);
@@ -362,7 +367,7 @@
 }
 
 [logo-mode="dark"] {
-  --logo-color: var(--brand-black);
+  --logo-color: var(--color-black);
   --logo-txt-shadow: var(--txt-shadow-1-invert);
   --logo-tire-shadow: var(--box-shadow-1-invert);
 }
@@ -405,7 +410,7 @@
 }
 
 .cart-summary-title {
-  border-bottom: solid var(--size-1) var(--brand-grey-m);
+  border-bottom: solid var(--size-1) var(--color-grey-m);
   font-size: var(--size-24);
   margin-bottom: var(--size-8);
   padding-bottom: var(--size-8);
@@ -553,9 +558,9 @@
 
 /* product card */
 :root {
-  --product-card-bg-color: var(--brand-white);
+  --product-card-bg-color: var(--color-white);
   --product-card-border-radius: var(--border-radius);
-  --product-card-title-color: var(--brand-color-primary);
+  --product-card-title-color: var(--color-primary);
   --product-card-title-font-size: var(--size-16);
   --product-card-font-size: var(--size-12);
 }
@@ -621,9 +626,9 @@
 
 [product-card-type="aside"] .product-card-qty {
   align-items: center;
-  background: var(--brand-color-action);
+  background: var(--color-action);
   border-radius: 50%;
-  color: var(--brand-white);
+  color: var(--color-white);
   display: flex;
   font-weight: bold;
   justify-content: center;
@@ -637,7 +642,7 @@
 
 /* hero */
 :root {
-  --hero-font-color: var(--brand-black);
+  --hero-font-color: var(--color-black);
   --hero-title-size: var(--size-40);
   --hero-copy-size: var(--size-20);
 }
@@ -703,7 +708,7 @@
 [hero-position="bottom-right"] .hero-content { grid-area: i; }
 
 [hero-theme~="dark"] .hero-content {
-  --hero-font-color: var(--brand-white);
+  --hero-font-color: var(--color-white);
 }
 
 [hero-theme~="dark"][hero-theme~="overlay"] .hero-overlay {
@@ -711,7 +716,7 @@
 }
 
 [hero-theme~="light"] .hero-content {
-  --hero-font-color: var(--brand-black);
+  --hero-font-color: var(--color-black);
 }
 
 [hero-theme~="light"][hero-theme~="overlay"] .hero-overlay {

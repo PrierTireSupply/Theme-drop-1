@@ -1,8 +1,8 @@
 /* footer */
 :root {
-  --footer-bg-color: var(--brand-grey-l);
-  --footer-link-color: var(--brand-color-secondary);
-  --footer-link-color-hover: var(--brand-color-action);
+  --footer-bg-color: var(--color-grey-l);
+  --footer-link-color: var(--color-secondary);
+  --footer-link-color-hover: var(--color-action);
 }
 
 .footer {

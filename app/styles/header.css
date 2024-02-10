@@ -1,8 +1,8 @@
 /* header */
 :root {
-  --header-bg-color: var(--brand-color-secondary);
-  --header-link-color: var(--brand-white);
-  --header-link-color-hover: var(--brand-color-action);
+  --header-bg-color: var(--color-secondary);
+  --header-link-color: var(--color-white);
+  --header-link-color-hover: var(--color-action);
 }
 
 .header {
@@ -36,8 +36,8 @@
 
 /* cart count */
 :root {
-  --cart-count-bg: var(--brand-color-action);
-  --cart-count-font-color: var(--brand-white);
+  --cart-count-bg: var(--color-action);
+  --cart-count-font-color: var(--color-white);
 }
 
 .cart {
@@ -64,11 +64,11 @@
 /* menu : primary */
 :root {
   --primary-menu-bg-color: transparent;
-  --primary-menu-bg-color-hover: var(--brand-white);
+  --primary-menu-bg-color-hover: var(--color-white);
   --primary-menu-border-radius: var(--size-4);
   --primary-menu-box-shadow: none;
-  --primary-menu-font-color: var(--brand-color-secondary);
-  --primary-menu-font-color-hover: var(--brand-color-action);
+  --primary-menu-font-color: var(--color-secondary);
+  --primary-menu-font-color-hover: var(--color-action);
 }
 
 .primary-menu {

@@ -1,6 +1,6 @@
 :root {
-  --anchor-color: var(--brand-color-secondary);
-  --anchor-color-hover: var(--brand-color-action);
+  --anchor-color: var(--color-secondary);
+  --anchor-color-hover: var(--color-action);
 }
 
 * {
@@ -10,11 +10,11 @@
 }
 
 body {
-  color: var(--brand-font-color);
-  font-family: var(--brand-font-family);
-  font-size: var(--brand-font-size);
-  font-weight: var(--brand-font-weight);
-  line-height: var(--brand-line-height);
+  color: var(--font-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
+  line-height: var(--font-line-height);
 }
 
 main {
