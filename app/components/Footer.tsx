@@ -1,6 +1,6 @@
-import {NavLink} from '@remix-run/react';
-import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
-import {useRootLoaderData} from '~/root';
+import { NavLink} from '@remix-run/react';
+import type { FooterQuery, HeaderQuery } from 'storefrontapi.generated';
+import { useRootLoaderData } from '~/root';
 
 export function Footer({
   menu,
@@ -40,16 +40,16 @@ function FooterMenu({
           </a>
         ) : (
           <NavLink
+            className="footer-menu-item"
             end
             key={item.id}
             prefetch="intent"
-            style={activeLinkStyle}
             to={url}
           >
             {item.title}
           </NavLink>
         );
-      })}
+     })}
     </nav>
   );
 }
@@ -65,7 +65,7 @@ const FALLBACK_FOOTER_MENU = {
       type: 'SHOP_POLICY',
       url: '/policies/privacy-policy',
       items: [],
-    },
+   },
     {
       id: 'gid://shopify/MenuItem/461633093688',
       resourceId: 'gid://shopify/ShopPolicy/23358013496',
@@ -74,7 +74,7 @@ const FALLBACK_FOOTER_MENU = {
       type: 'SHOP_POLICY',
       url: '/policies/refund-policy',
       items: [],
-    },
+   },
     {
       id: 'gid://shopify/MenuItem/461633126456',
       resourceId: 'gid://shopify/ShopPolicy/23358111800',
@@ -83,7 +83,7 @@ const FALLBACK_FOOTER_MENU = {
       type: 'SHOP_POLICY',
       url: '/policies/shipping-policy',
       items: [],
-    },
+   },
     {
       id: 'gid://shopify/MenuItem/461633159224',
       resourceId: 'gid://shopify/ShopPolicy/23358079032',
@@ -92,19 +92,6 @@ const FALLBACK_FOOTER_MENU = {
       type: 'SHOP_POLICY',
       url: '/policies/terms-of-service',
       items: [],
-    },
+   },
   ],
 };
-
-function activeLinkStyle({
-  isActive,
-  isPending,
-}: {
-  isActive: boolean;
-  isPending: boolean;
-}) {
-  return {
-    fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'white',
-  };
-}

@@ -1,4 +1,4 @@
-import {useNonce} from '@shopify/hydrogen';
+import { useNonce } from '@shopify/hydrogen';
 import {
   defer,
   type SerializeFrom,
@@ -17,11 +17,14 @@ import {
   isRouteErrorResponse,
   type ShouldRevalidateFunction,
 } from '@remix-run/react';
-import type {CustomerAccessToken} from '@shopify/hydrogen/storefront-api-types';
+import type { CustomerAccessToken } from '@shopify/hydrogen/storefront-api-types';
+import { Layout } from '~/components/Layout';
+
 import favicon from '../public/favicon.svg';
-import resetStyles from './styles/reset.css';
-import appStyles from './styles/app.css';
-import {Layout} from '~/components/Layout';
+import cssReset from './styles/reset.css';
+import cssApp from './styles/app.css';
+import cssHeader from './styles/header.css';
+import cssFooter from './styles/footer.css';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -46,17 +49,16 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 
 export function links() {
   return [
-    {rel: 'stylesheet', href: resetStyles},
-    {rel: 'stylesheet', href: appStyles},
-    {
-      rel: 'preconnect',
-      href: 'https://cdn.shopify.com',
-    },
-    {
-      rel: 'preconnect',
-      href: 'https://shop.app',
-    },
-    {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    { rel: 'icon', type: 'image/svg+xml', href: favicon },
+    { rel: 'stylesheet', href: cssReset },
+    { rel: 'stylesheet', href: cssApp },
+    { rel: 'stylesheet', href: cssHeader },
+    { rel: 'stylesheet', href: cssFooter },
+    { rel: 'preconnect', href: 'https://cdn.shopify.com' },
+    { rel: 'preconnect', href: 'https://shop.app' },
+    { rel: 'preconnect', href: 'https://fonts.googleapis.com', crossOrigin: 'anonymous' },
+    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,500;1,500&display=swap'},
   ];
 }
 
@@ -116,6 +118,7 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        {/*<meta httpEquiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' https://fonts.gstatic.com/; style-src 'self' https://fonts.googleapis.com/ 'unsafe-inline';" />*/}
         <Meta />
         <Links />
       </head>

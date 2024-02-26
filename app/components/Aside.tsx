@@ -9,39 +9,51 @@
  * ```
  */
 export function Aside({
-  children,
-  heading,
   id = 'aside',
+  classes = 'dialog',
+  dialog = 'default',
+  heading,
+  children
 }: {
-  children?: React.ReactNode;
-  heading: React.ReactNode;
   id?: string;
+  classes?: string;
+  dialog?: string;
+  heading: React.ReactNode;
+  children?: React.ReactNode;
 }) {
   return (
-    <div aria-modal className="overlay" id={id} role="dialog">
+    <div id={id} className={classes} dialog-type={dialog}
+      aria-modal
+      aria-label={heading}
+      role="dialog"
+    >
       <button
-        className="close-outside"
+        className="dialog-close-area"
+        aria-label="close dialog"
         onClick={() => {
           history.go(-1);
           window.location.hash = '';
-        }}
+       }}
       />
-      <aside>
-        <header>
-          <h3>{heading}</h3>
-          <CloseAside />
-        </header>
-        <main>{children}</main>
-      </aside>
+      <div className="dialog-content">
+        <h3 className="dialog-heading">{heading}</h3>
+        <CloseDialog />
+        {children}
+      </div>
     </div>
   );
 }
 
-function CloseAside() {
+function CloseDialog() {
   return (
     /* eslint-disable-next-line jsx-a11y/anchor-is-valid */
-    <a className="close" href="#" onChange={() => history.go(-1)}>
-      &times;
+    <a className="btn-tertiary dialog-close"
+      button-type="icon"
+      aria-label="close dialog"
+      href="#" onChange={() => history.go(-1)}
+      role="button"
+    >
+      <span className="icon">&times;</span>
     </a>
   );
 }

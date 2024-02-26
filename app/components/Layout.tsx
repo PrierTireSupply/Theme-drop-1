@@ -1,14 +1,18 @@
-import {Await} from '@remix-run/react';
-import {Suspense} from 'react';
+import { Await } from '@remix-run/react';
+import { Suspense } from 'react';
+
 import type {
   CartApiQueryFragment,
   FooterQuery,
   HeaderQuery,
 } from 'storefrontapi.generated';
-import {Aside} from '~/components/Aside';
-import {Footer} from '~/components/Footer';
-import {Header, HeaderMenu} from '~/components/Header';
-import {CartMain} from '~/components/Cart';
+
+import { Header, HeaderMenu } from '~/components/Header';
+
+import { Aside } from '~/components/Aside';
+import { Footer } from '~/components/Footer';
+import { CartMain } from '~/components/Cart';
+
 import {
   PredictiveSearchForm,
   PredictiveSearchResults,
@@ -31,10 +35,10 @@ export function Layout({
 }: LayoutProps) {
   return (
     <>
+      <Header header={header} cart={cart} isLoggedIn={isLoggedIn} />
+      <MobileMenuAside menu={header.menu} shop={header.shop} />
       <CartAside cart={cart} />
       <SearchAside />
-      <MobileMenuAside menu={header.menu} shop={header.shop} />
-      <Header header={header} cart={cart} isLoggedIn={isLoggedIn} />
       <main>{children}</main>
       <Suspense>
         <Await resolve={footer}>
@@ -47,12 +51,12 @@ export function Layout({
 
 function CartAside({cart}: {cart: LayoutProps['cart']}) {
   return (
-    <Aside id="cart-aside" heading="CART">
+    <Aside id="cart-aside" heading="Cart">
       <Suspense fallback={<p>Loading cart ...</p>}>
         <Await resolve={cart}>
           {(cart) => {
             return <CartMain cart={cart} layout="aside" />;
-          }}
+         }}
         </Await>
       </Suspense>
     </Aside>
@@ -61,7 +65,7 @@ function CartAside({cart}: {cart: LayoutProps['cart']}) {
 
 function SearchAside() {
   return (
-    <Aside id="search-aside" heading="SEARCH">
+    <Aside id="search-aside" heading="Search">
       <div className="predictive-search">
         <br />
         <PredictiveSearchForm>
@@ -86,20 +90,18 @@ function SearchAside() {
   );
 }
 
-function MobileMenuAside({
-  menu,
-  shop,
-}: {
+function MobileMenuAside({menu, shop}: {
   menu: HeaderQuery['menu'];
   shop: HeaderQuery['shop'];
 }) {
   return (
-    <Aside id="mobile-menu-aside" heading="MENU">
+    <Aside id="mobile-menu-aside" classes="dialog" dialog="primary" heading="Categories">
+
       <HeaderMenu
         menu={menu}
-        viewport="mobile"
         primaryDomainUrl={shop.primaryDomain.url}
       />
+
     </Aside>
   );
 }

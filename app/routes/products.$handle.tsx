@@ -11,8 +11,8 @@ import type {
   ProductFragment,
   ProductVariantsQuery,
   ProductVariantFragment,
+  RecommendedProductsQuery,
 } from 'storefrontapi.generated';
-
 import {
   Image,
   Money,
@@ -26,6 +26,10 @@ import type {
   SelectedOption,
 } from '@shopify/hydrogen/storefront-api-types';
 import {getVariantUrl} from '~/utils';
+
+import { Section } from '~/components/Section';
+import { Grid } from '~/components/Grid';
+import { ProductCard } from '~/components/ProductCard';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Hydrogen | ${data?.product.title ?? ''}`}];
@@ -70,7 +74,8 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
   if (firstVariantIsDefault) {
     product.selectedVariant = firstVariant;
-  } else {
+  }
+  else {
     // if no selected variant was returned from the selected options,
     // we redirect to the first variant's url with it's selected options applied
     if (!product.selectedVariant) {
@@ -87,13 +92,13 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     variables: {handle},
   });
 
-  return defer({product, variants});
+  // testing
+  const recommendedProducts = storefront.query(RECOMMENDED_PRODUCTS_QUERY);
+
+  return defer({product, variants, recommendedProducts});
 }
 
-function redirectToFirstVariant({
-  product,
-  request,
-}: {
+function redirectToFirstVariant({product,request}: {
   product: ProductFragment;
   request: Request;
 }) {
@@ -116,24 +121,70 @@ function redirectToFirstVariant({
 export default function Product() {
   const {product, variants} = useLoaderData<typeof loader>();
   const {selectedVariant} = product;
+  const data = useLoaderData<typeof loader>();
   return (
-    <div className="product">
-      <ProductImage image={selectedVariant?.image} />
-      <ProductMain
-        selectedVariant={selectedVariant}
-        product={product}
-        variants={variants}
-      />
-    </div>
+
+    <>
+
+    <Section theme="pdp">
+
+      <Grid gap="pdp" desktop="pdp" tablet="pdp" mobile="1">
+
+        <ProductImage image={selectedVariant?.image} />
+
+        <ProductMain
+          selectedVariant={selectedVariant}
+          product={product}
+          variants={variants}
+        />
+
+      </Grid>
+
+    </Section>
+
+    <Section
+      title="Recommended Products"
+      copy="Hello world, this is copy!"
+    >
+
+      <Suspense fallback={<div>Loading...</div>}>
+        <Await resolve={data.recommendedProducts}>
+
+          {({products}) => (
+            <Grid gap="8/16" desktop="4" tablet="4" mobile="2">
+              {products.nodes.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  layout="grid"
+                  url={`/products/${product.handle}`}
+                  img={product.images.nodes[0]}
+                  imgSize="(min-width: 45em) 20vw, 50vw"
+                  imgAlt={product.title}
+                  title={product.title}
+                  price={product.priceRange.minVariantPrice}
+                />
+              ))}
+            </Grid>
+          )}
+
+        </Await>
+      </Suspense>
+
+    </Section>
+
+    </>
+
   );
 }
 
 function ProductImage({image}: {image: ProductVariantFragment['image']}) {
+
   if (!image) {
-    return <div className="product-image" />;
+    return <div className="product-details-image" />;
   }
+
   return (
-    <div className="product-image">
+    <div className="product-details-image">
       <Image
         alt={image.altText || 'Product Image'}
         aspectRatio="1/1"
@@ -143,32 +194,32 @@ function ProductImage({image}: {image: ProductVariantFragment['image']}) {
       />
     </div>
   );
+
 }
 
-function ProductMain({
-  selectedVariant,
-  product,
-  variants,
-}: {
+function ProductMain({selectedVariant,product,variants}: {
   product: ProductFragment;
   selectedVariant: ProductFragment['selectedVariant'];
   variants: Promise<ProductVariantsQuery>;
 }) {
+
   const {title, descriptionHtml} = product;
+
   return (
-    <div className="product-main">
-      <h1>{title}</h1>
+
+    <div className="product-details">
+
+      <h2 className="product-details-title">{title}</h2>
+
       <ProductPrice selectedVariant={selectedVariant} />
-      <br />
-      <Suspense
-        fallback={
-          <ProductForm
-            product={product}
-            selectedVariant={selectedVariant}
-            variants={[]}
-          />
-        }
-      >
+
+      <Suspense fallback={
+        <ProductForm
+          product={product}
+          selectedVariant={selectedVariant}
+          variants={[]}
+        />
+      }>
         <Await
           errorElement="There was a problem loading product variants"
           resolve={variants}
@@ -182,54 +233,49 @@ function ProductMain({
           )}
         </Await>
       </Suspense>
-      <br />
-      <br />
-      <p>
-        <strong>Description</strong>
-      </p>
-      <br />
-      <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-      <br />
+
+      <h3 className="product-details-subtitle">
+        Description
+      </h3>
+
+      <div className="product-details-description"
+        dangerouslySetInnerHTML={{__html: descriptionHtml}}
+      />
+
     </div>
+
   );
 }
 
-function ProductPrice({
-  selectedVariant,
-}: {
+function ProductPrice({selectedVariant}: {
   selectedVariant: ProductFragment['selectedVariant'];
 }) {
   return (
-    <div className="product-price">
+    <div className="product-details-price">
       {selectedVariant?.compareAtPrice ? (
         <>
-          <p>Sale</p>
-          <br />
-          <div className="product-price-on-sale">
-            {selectedVariant ? <Money data={selectedVariant.price} /> : null}
+          <h3>Sale</h3>
+          <div className="product-details-sale">
+            {selectedVariant ? <Money className="sale" data={selectedVariant.price} /> : null}
             <s>
-              <Money data={selectedVariant.compareAtPrice} />
+              <Money className="strike" data={selectedVariant.compareAtPrice} />
             </s>
           </div>
         </>
       ) : (
-        selectedVariant?.price && <Money data={selectedVariant?.price} />
+        selectedVariant?.price && <Money className="normal" data={selectedVariant?.price} />
       )}
     </div>
   );
 }
 
-function ProductForm({
-  product,
-  selectedVariant,
-  variants,
-}: {
+function ProductForm({product,selectedVariant,variants}: {
   product: ProductFragment;
   selectedVariant: ProductFragment['selectedVariant'];
   variants: Array<ProductVariantFragment>;
 }) {
   return (
-    <div className="product-form">
+    <div className="product-details-form">
       <VariantSelector
         handle={product.handle}
         options={product.options}
@@ -237,21 +283,17 @@ function ProductForm({
       >
         {({option}) => <ProductOptions key={option.name} option={option} />}
       </VariantSelector>
-      <br />
+
       <AddToCartButton
         disabled={!selectedVariant || !selectedVariant.availableForSale}
         onClick={() => {
           window.location.href = window.location.href + '#cart-aside';
         }}
         lines={
-          selectedVariant
-            ? [
-                {
-                  merchandiseId: selectedVariant.id,
-                  quantity: 1,
-                },
-              ]
-            : []
+          selectedVariant? [{
+            merchandiseId: selectedVariant.id,
+            quantity: 1,
+          },]: []
         }
       >
         {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
@@ -262,40 +304,41 @@ function ProductForm({
 
 function ProductOptions({option}: {option: VariantOption}) {
   return (
-    <div className="product-options" key={option.name}>
-      <h5>{option.name}</h5>
-      <div className="product-options-grid">
+
+    <div className="product-details-options" key={option.name}>
+
+      <h3 className="product-details-options-title">
+        {option.name}
+      </h3>
+
+      <ul className="product-details-options-list">
         {option.values.map(({value, isAvailable, isActive, to}) => {
           return (
-            <Link
-              className="product-options-item"
-              key={option.name + value}
-              prefetch="intent"
-              preventScrollReset
-              replace
-              to={to}
-              style={{
-                border: isActive ? '1px solid black' : '1px solid transparent',
-                opacity: isAvailable ? 1 : 0.3,
-              }}
-            >
-              {value}
-            </Link>
+            <li className="product-details-option" key={option.name + value}>
+              <Link
+                className={
+                  (isActive ? 'btn-secondary' : 'btn-tertiary') +
+                  (isAvailable ? '' : ' disabled')
+                }
+                button-type="small"
+                prefetch="intent"
+                preventScrollReset
+                replace
+                to={to}
+              >
+                {value}
+              </Link>
+            </li>
           );
         })}
-      </div>
-      <br />
+      </ul>
+
     </div>
+
   );
 }
 
-function AddToCartButton({
-  analytics,
-  children,
-  disabled,
-  lines,
-  onClick,
-}: {
+function AddToCartButton({analytics,children,disabled,lines,onClick}: {
   analytics?: unknown;
   children: React.ReactNode;
   disabled?: boolean;
@@ -312,6 +355,8 @@ function AddToCartButton({
             value={JSON.stringify(analytics)}
           />
           <button
+            className="btn-primary"
+            button-type="full"
             type="submit"
             onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
@@ -423,6 +468,37 @@ const VARIANTS_QUERY = `#graphql
   ) @inContext(country: $country, language: $language) {
     product(handle: $handle) {
       ...ProductVariants
+    }
+  }
+` as const;
+
+const RECOMMENDED_PRODUCTS_QUERY = `#graphql
+  fragment RecommendedProduct on Product {
+    id
+    title
+    handle
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    images(first: 1) {
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+      }
+    }
+  }
+  query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
+      nodes {
+        ...RecommendedProduct
+      }
     }
   }
 ` as const;

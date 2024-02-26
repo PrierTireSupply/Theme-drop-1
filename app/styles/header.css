@@ -1,0 +1,96 @@
+/* header */
+:root {
+  --header-bg-color: var(--color-secondary);
+  --header-link-color: var(--color-white);
+  --header-link-color-hover: var(--color-action);
+}
+
+.header {
+  background: var(--header-bg-color);
+  padding: var(--size-16) var(--size-32);
+}
+
+.header-logo {
+  min-height: var(--size-48);
+}
+
+.header-menu {
+  align-items: center;
+  display: flex;
+  gap: var(--size-24);
+}
+
+.header-menu-item {
+  color: var(--header-link-color);
+  font-weight: bold;
+}
+
+.header-menu-item:focus,
+.header-menu-item:hover {
+  --header-link-color: var(--header-link-color-hover);
+}
+
+.header-spacer {
+  flex: 1 1 auto;
+}
+
+/* cart count */
+:root {
+  --cart-count-bg: var(--color-action);
+  --cart-count-font-color: var(--color-white);
+}
+
+.cart {
+  padding-right: var(--size-16);
+  position: relative;
+}
+
+.cart-count {
+  align-items: center;
+  background: var(--cart-count-bg);
+  border-radius: 50%;
+  box-shadow: var(--box-shadow-1);
+  color: var(--cart-count-font-color);
+  display: flex;
+  font-size: var(--size-12);
+  justify-content: center;
+  height: var(--size-16);
+  width: var(--size-16);
+  position: absolute;
+  top: 0;
+  right: -.1250rem;
+}
+
+/* menu : primary */
+:root {
+  --primary-menu-bg-color: transparent;
+  --primary-menu-bg-color-hover: var(--color-white);
+  --primary-menu-border-radius: var(--size-4);
+  --primary-menu-box-shadow: none;
+  --primary-menu-font-color: var(--color-secondary);
+  --primary-menu-font-color-hover: var(--color-action);
+}
+
+.primary-menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-8);
+  margin-top: var(--size-16);
+}
+
+.primary-menu-item {
+  background: var(--primary-menu-bg-color);
+  border-radius: var(--primary-menu-border-radius);
+  box-shadow: var(--primary-menu-box-shadow);
+  color: var(--primary-menu-font-color);
+  font-size: var(--size-12);
+  font-weight: bold;
+  padding: var(--size-8) var(--size-16);
+}
+
+.primary-menu-item:focus,
+.primary-menu-item:hover {
+  --primary-menu-bg-color: var(--primary-menu-bg-color-hover);
+  --primary-menu-box-shadow: var(--box-shadow-1);
+  --primary-menu-font-color: var(--primary-menu-font-color-hover);
+}

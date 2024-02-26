@@ -1,62 +1,67 @@
-import {Await, NavLink} from '@remix-run/react';
-import {Suspense} from 'react';
-import type {HeaderQuery} from 'storefrontapi.generated';
-import type {LayoutProps} from './Layout';
-import {useRootLoaderData} from '~/root';
+import { Await, NavLink } from '@remix-run/react';
+import { Suspense } from 'react';
+import type { HeaderQuery } from 'storefrontapi.generated';
+import type { LayoutProps } from './Layout';
+import { useRootLoaderData } from '~/root';
+import { Logo } from '~/components/Logo';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
-
 type Viewport = 'desktop' | 'mobile';
 
 export function Header({header, isLoggedIn, cart}: HeaderProps) {
   const {shop, menu} = header;
   return (
     <header className="header">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
-      </NavLink>
-      <HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-      />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+
+      <nav className="header-menu" role="navigation">
+
+        <NavLink className="header-logo" prefetch="intent" to="/" end>
+          <Logo size="small" mode="light" animate="false" />
+        </NavLink>
+
+        <HeaderMenuToggle />
+
+        <div className="header-spacer"></div>
+
+        <NavLink className="header-menu-item" prefetch="intent" to="/account">
+          {isLoggedIn ? 'Account' : 'Sign in'}
+        </NavLink>
+
+        <SearchToggle />
+
+        <CartToggle cart={cart} />
+
+      </nav>
+
     </header>
   );
 }
 
-export function HeaderMenu({
-  menu,
-  primaryDomainUrl,
-  viewport,
-}: {
+export function HeaderMenu({children, menu, primaryDomainUrl}: {
   menu: HeaderProps['header']['menu'];
   primaryDomainUrl: HeaderQuery['shop']['primaryDomain']['url'];
-  viewport: Viewport;
 }) {
   const {publicStoreDomain} = useRootLoaderData();
-  const className = `header-menu-${viewport}`;
+  const className = `primary-menu`;
 
   function closeAside(event: React.MouseEvent<HTMLAnchorElement>) {
-    if (viewport === 'mobile') {
-      event.preventDefault();
-      window.location.href = event.currentTarget.href;
-    }
+    event.preventDefault();
+    window.location.href = event.currentTarget.href;
   }
 
   return (
     <nav className={className} role="navigation">
-      {viewport === 'mobile' && (
-        <NavLink
-          end
-          onClick={closeAside}
-          prefetch="intent"
-          style={activeLinkStyle}
-          to="/"
-        >
-          Home
-        </NavLink>
-      )}
+
+      {/*<NavLink
+        className="primary-menu-item"
+        end
+        onClick={closeAside}
+        prefetch="intent"
+        to="/"
+      >
+        Home
+      </NavLink>*/}
+
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
 
@@ -69,52 +74,40 @@ export function HeaderMenu({
             : item.url;
         return (
           <NavLink
-            className="header-menu-item"
+            className="primary-menu-item"
             end
             key={item.id}
             onClick={closeAside}
             prefetch="intent"
-            style={activeLinkStyle}
             to={url}
           >
             {item.title}
           </NavLink>
         );
-      })}
+     })}
+      {children}
     </nav>
   );
 }
 
-function HeaderCtas({
-  isLoggedIn,
-  cart,
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
+function HeaderMenuToggle() {
   return (
-    <nav className="header-ctas" role="navigation">
-      <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
-        {isLoggedIn ? 'Account' : 'Sign in'}
-      </NavLink>
-      <SearchToggle />
-      <CartToggle cart={cart} />
-    </nav>
-  );
-}
-
-function HeaderMenuMobileToggle() {
-  return (
-    <a className="header-menu-mobile-toggle" href="#mobile-menu-aside">
-      <h3>☰</h3>
+    <a href="#mobile-menu-aside" className="header-menu-item" role="button">
+      Categories
     </a>
   );
 }
 
 function SearchToggle() {
-  return <a href="#search-aside">Search</a>;
+  return <a href="#search-aside" className="header-menu-item" role="button">Search</a>;
 }
 
 function CartBadge({count}: {count: number}) {
-  return <a href="#cart-aside">Cart {count}</a>;
+  return (
+    <a href="#cart-aside" className="header-menu-item cart" role="button">
+      Cart {count > 0 ? <span className="cart-count">{count}</span> : null}
+    </a>
+  );
 }
 
 function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
@@ -124,7 +117,7 @@ function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
         {(cart) => {
           if (!cart) return <CartBadge count={0} />;
           return <CartBadge count={cart.totalQuantity || 0} />;
-        }}
+       }}
       </Await>
     </Suspense>
   );
@@ -141,7 +134,7 @@ const FALLBACK_HEADER_MENU = {
       type: 'HTTP',
       url: '/collections',
       items: [],
-    },
+   },
     {
       id: 'gid://shopify/MenuItem/461609533496',
       resourceId: null,
@@ -150,7 +143,7 @@ const FALLBACK_HEADER_MENU = {
       type: 'HTTP',
       url: '/blogs/journal',
       items: [],
-    },
+   },
     {
       id: 'gid://shopify/MenuItem/461609566264',
       resourceId: null,
@@ -159,7 +152,7 @@ const FALLBACK_HEADER_MENU = {
       type: 'HTTP',
       url: '/policies',
       items: [],
-    },
+   },
     {
       id: 'gid://shopify/MenuItem/461609599032',
       resourceId: 'gid://shopify/Page/92591030328',
@@ -168,19 +161,6 @@ const FALLBACK_HEADER_MENU = {
       type: 'PAGE',
       url: '/pages/about',
       items: [],
-    },
+   },
   ],
 };
-
-function activeLinkStyle({
-  isActive,
-  isPending,
-}: {
-  isActive: boolean;
-  isPending: boolean;
-}) {
-  return {
-    fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'black',
-  };
-}
