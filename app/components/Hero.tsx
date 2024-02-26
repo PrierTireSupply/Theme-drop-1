@@ -8,6 +8,7 @@ export function Hero({
   theme,
   img,
   height,
+  width,
   position,
   title,
   copy,
@@ -25,9 +26,8 @@ export function Hero({
           <Image
             data={img}
             height={height || 1080}
-            width={1920}
+            width={width || 1920}
           />
-          <div className="hero-overlay"></div>
         </div>
       )}
 

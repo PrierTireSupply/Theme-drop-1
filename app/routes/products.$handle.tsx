@@ -303,7 +303,6 @@ function ProductForm({product,selectedVariant,variants}: {
 }
 
 function ProductOptions({option}: {option: VariantOption}) {
-
   return (
 
     <div className="product-details-options" key={option.name}>

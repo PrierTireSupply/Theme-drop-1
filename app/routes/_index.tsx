@@ -30,7 +30,7 @@ export default function Homepage() {
     <>
 
       <Hero
-        theme="light overlay"
+        theme="dark overlay"
         img={data.featuredCollection?.image}
         title={data.featuredCollection.title}
         copy={data.featuredCollection.copy || "Hello world, this is copy!"}
@@ -70,9 +70,8 @@ export default function Homepage() {
 
       <Hero
         theme="dark overlay"
-        height="540"
         img={data.featuredCollection?.image}
-        position="bottom-left"
+        position="center-center"
         title={data.featuredCollection.title}
         copy={data.featuredCollection.copy || "Hello world, this is copy!"}
         cta={data.featuredCollection.cta || "This is a CTA"}
