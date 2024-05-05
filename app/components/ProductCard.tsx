@@ -29,11 +29,15 @@ export function ProductCard({
 
       <div className="product-card-content">
 
-        <Link className="product-card-title" to={url} prefetch="intent">
-          {title}
-        </Link>
+        {title && url && (
+          <Link className="product-card-title" to={url} prefetch="intent">
+            {title}
+          </Link>
+        )}
 
-        <Money className="product-card-price" data={price} />
+        {price && (
+          <Money className="product-card-price" data={price} />
+        )}
 
       </div>
 

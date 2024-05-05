@@ -9,6 +9,8 @@ import {
 import {Image, Money, Pagination} from '@shopify/hydrogen';
 import React, {useRef, useEffect} from 'react';
 
+import { ProductCard } from '~/components/ProductCard';
+
 import type {
   PredictiveProductFragment,
   PredictiveCollectionFragment,
@@ -90,14 +92,15 @@ export function SearchForm({searchTerm}: {searchTerm: string}) {
   return (
     <Form method="get">
       <input
-        defaultValue={searchTerm}
-        name="q"
-        placeholder="Search…"
         ref={inputRef}
+        defaultValue={searchTerm}
+        input-type="full flat"
+        name="q"
+        aria-label="Search…"
+        placeholder="Search…"
         type="search"
       />
-      &nbsp;
-      <button type="submit">Search</button>
+      <button className="btn-secondary" button-type="full flat" type="submit">Search</button>
     </Form>
   );
 }
@@ -307,7 +310,7 @@ export function PredictiveSearchResults() {
  }
   return (
     <div className="predictive-search-results">
-      <div>
+      <>
         {results.map(({type, items}) => (
           <PredictiveSearchResult
             goToSearchResult={goToSearchResult}
@@ -317,31 +320,28 @@ export function PredictiveSearchResults() {
             type={type}
           />
         ))}
-      </div>
+      </>
       {/* view all results /search?q=term */}
       {searchTerm.current && (
-        <Link onClick={goToSearchResult} to={`/search?q=${searchTerm.current}`}>
-          <p>
-            View all results for <q>{searchTerm.current}</q>
-            &nbsp; →
-          </p>
-        </Link>
+        <p className="predictive-search" aria-live="polite">
+          <Link onClick={goToSearchResult} to={`/search?q=${searchTerm.current}`}>
+            View all results for <q className="predictive-search-not-found">{searchTerm.current}</q>
+          </Link>
+        </p>
       )}
     </div>
   );
 }
 
-function NoPredictiveSearchResults({
-  searchTerm,
-}: {
+function NoPredictiveSearchResults({ searchTerm }: {
   searchTerm: React.MutableRefObject<string>;
 }) {
   if (!searchTerm.current) {
     return null;
- }
+  }
   return (
-    <p>
-      No results found for <q>{searchTerm.current}</q>
+    <p className="predictive-search" aria-live="polite">
+      No results found for <q className="predictive-search-not-found">{searchTerm.current}</q>
     </p>
   );
 }
@@ -360,16 +360,13 @@ function PredictiveSearchResult({
   type,
 }: SearchResultTypeProps) {
   const isSuggestions = type === 'queries';
-  const categoryUrl = `/search?q=${
-    searchTerm.current
- }&type=${pluralToSingularSearchType(type)}`;
-
+  const categoryUrl = `/search?q=${searchTerm.current}&type=${pluralToSingularSearchType(type)}`;
   return (
     <div className="predictive-search-result" key={type}>
       <Link prefetch="intent" to={categoryUrl} onClick={goToSearchResult}>
-        <h5>{isSuggestions ? 'Suggestions' : type}</h5>
+        <h4 className="predictive-search-title">{isSuggestions ? 'Suggestions' : type}</h4>
       </Link>
-      <ul>
+      <ul className="predictive-search-products">
         {items.map((item: NormalizedPredictiveSearchResultItem) => (
           <SearchResultItem
             goToSearchResult={goToSearchResult}
@@ -388,34 +385,23 @@ type SearchResultItemProps = Pick<SearchResultTypeProps, 'goToSearchResult'> & {
 
 function SearchResultItem({goToSearchResult, item}: SearchResultItemProps) {
   return (
-    <li className="predictive-search-result-item" key={item.id}>
-      <Link onClick={goToSearchResult} to={item.url}>
-        {item.image?.url && (
-          <Image
-            alt={item.image.altText ?? ''}
-            src={item.image.url}
-            width={50}
-            height={50}
-          />
-        )}
-        <div>
-          {item.styledTitle ? (
-            <div
-              dangerouslySetInnerHTML={{
-                __html: item.styledTitle,
-             }}
-            />
-          ) : (
-            <span>{item.title}</span>
-          )}
-          {item?.price && (
-            <small>
-              <Money data={item.price} />
-            </small>
-          )}
-        </div>
-      </Link>
+
+    <li key={item.id} className="predictive-search-product">
+
+      {item  && (
+        <ProductCard
+          layout="aside"
+          url={item.url}
+          img={item.image}
+          imgSize="(min-width: 45em) 128px, 128px"
+          imgAlt={item.title}
+          title={item.title}
+          price={item.price}
+        />
+      )}
+      
     </li>
+
   );
 }
 

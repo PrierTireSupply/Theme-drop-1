@@ -504,6 +504,28 @@
   opacity: .72;
 }
 
+/* search */
+.predictive-search {
+  margin-top: var(--size-16);
+}
+
+.predictive-search-title {
+  font-size: var(--size-16);
+  margin-top: var(--size-16);
+  text-transform: capitalize;
+}
+  
+.predictive-search-not-found {
+  font-weight: bold;
+}
+
+.predictive-search-products {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-16);
+  margin-top: var(--size-16);
+}
+
 /* grid */
 .grid {
   display: grid;

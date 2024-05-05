@@ -67,21 +67,21 @@ function SearchAside() {
   return (
     <Aside id="search-aside" heading="Search">
       <div className="predictive-search">
-        <br />
         <PredictiveSearchForm>
           {({fetchResults, inputRef}) => (
-            <div>
+            <>
               <input
-                name="q"
+                ref={inputRef}
                 onChange={fetchResults}
                 onFocus={fetchResults}
-                placeholder="Search"
-                ref={inputRef}
+                input-type="full flat"
+                name="q"
+                aria-label="Search…"
+                placeholder="Search…"
                 type="search"
               />
-              &nbsp;
-              <button type="submit">Search</button>
-            </div>
+              <button className="btn-secondary" button-type="full flat" type="submit">Search</button>
+            </>
           )}
         </PredictiveSearchForm>
         <PredictiveSearchResults />

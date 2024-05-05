@@ -56,8 +56,8 @@ export function links() {
     { rel: 'stylesheet', href: cssFooter },
     { rel: 'preconnect', href: 'https://cdn.shopify.com' },
     { rel: 'preconnect', href: 'https://shop.app' },
-    { rel: 'preconnect', href: 'https://fonts.googleapis.com', crossOrigin: 'anonymous' },
-    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+    { rel: 'preconnect', href: 'https://fonts.googleapis.com', crossOrigin: '' },
+    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: '' },
     { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,500;1,500&display=swap'},
   ];
 }
@@ -118,7 +118,6 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        {/*<meta httpEquiv="Content-Security-Policy" content="default-src 'self'; font-src 'self' https://fonts.gstatic.com/; style-src 'self' https://fonts.googleapis.com/ 'unsafe-inline';" />*/}
         <Meta />
         <Links />
       </head>
